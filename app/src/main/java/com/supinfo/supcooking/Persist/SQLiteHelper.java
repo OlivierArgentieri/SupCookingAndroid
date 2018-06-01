@@ -93,4 +93,16 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         Cursor result = db.rawQuery( sql , params);
         return result.getCount() > 0;
     }
+
+    public User getUser(User user){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String[] params = new String[]{  user.getEmail(), user.getUsername()};
+        String sql = "select * from " + TABLE_NAME + " WHERE email LIKE ?  AND username LIKE ?";
+        Cursor result = db.rawQuery( sql , params);
+        if (result.getCount() > 0){
+            User u = new User(result.getString(1), result.getString(2), result.getString(3), result.getString(4), result.getString(5), result.getString(6), result.getString(7));
+            return u;
+        }
+        return null;
+    }
 }

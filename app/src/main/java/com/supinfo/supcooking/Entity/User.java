@@ -82,10 +82,6 @@ public class User implements Serializable {
 
     public User() {}
 
-    public User(String email, String password){
-        this.setPassword(password);
-        this.setEmail(email);
-    }
 
     public User(String email, String password, String username) {
         this.setEmail(email);
@@ -93,6 +89,16 @@ public class User implements Serializable {
         this.setUsername(username);
     }
 
+    public User(String username, String password,  String phoneNumber, String firstname, String lastname, String postalCode,  String email){
+        this.setUsername(username);
+        this.setPassword(password);
+        this.setPhoneNumber(phoneNumber);
+        this.setFirstname(firstname);
+        this.setLastname(lastname);
+        this.setPostalCode(postalCode);
+        this.setEmail(email);
+    }
+    
     private static String SHA256(String password){
         String generatedPassword = null;
         try {

@@ -8,5 +8,5 @@
     <string name="text_button_login_activity_login">Se connecter</string>
     <string name="text_view_password_activity_login">Password :</string>
     <string name="text_view_email_activity_login">Email :</string>
-    <string name="text_view_pseudo_activity_register">pseudo :</string>
+    <string name="text_view_pseudo_activity_register">Username :</string>
 </resources>

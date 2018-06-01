@@ -25,7 +25,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickLogin(View v){
-
+       Intent intent = new Intent(this, RecipesActivity.class);
+       startActivity(intent);
     }
 
     public void onClickRegister(View v){
