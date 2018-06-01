@@ -8,10 +8,6 @@ import android.view.ViewGroup;
 
 import com.supinfo.supcooking.R;
 
-/**
- * Created by User on 01/06/2018.
- */
-
 public class Page2 extends Fragment{
     protected View view;
     @Override

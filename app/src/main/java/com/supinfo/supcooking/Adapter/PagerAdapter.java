@@ -3,6 +3,8 @@ package com.supinfo.supcooking.Adapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.supinfo.supcooking.Fragment.Page1;
 import com.supinfo.supcooking.Fragment.Page2;
@@ -17,7 +19,7 @@ public class PagerAdapter extends FragmentPagerAdapter{
 
     @Override
     public int getCount() {
-        return 2;
+        return 3;
     }
 
     @Override
@@ -28,10 +30,11 @@ public class PagerAdapter extends FragmentPagerAdapter{
                 return new Page1();
             case 1:
                 return new Page2();
-           // case 2:
-           //     return new Page3();
+            case 2:
+                return new Page1();
           default:
              return null;
         }
     }
+
 }
