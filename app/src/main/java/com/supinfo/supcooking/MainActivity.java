@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 
 import com.supinfo.supcooking.Entity.User;
 import com.supinfo.supcooking.Persist.SQLiteHelper;
+import com.supinfo.supcooking.Util.Util;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -36,6 +37,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.supinfo.supcooking.Util.Util.isNetworkAvailable;
+import static com.supinfo.supcooking.Util.Util.messageAlert;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -59,18 +63,22 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickLogin(View v) {
         if (ETUsername.getText().toString().trim().isEmpty() || ETPassword.getText().toString().trim().isEmpty()) {
-            messageAlert("Tout les champs sont obligatoire, \tmerci de rééssayer.");
+            messageAlert("Tout les champs sont obligatoire, \tmerci de rééssayer.", this);
         } else {
-            if (isNetworkAvailable()) {
+            if (isNetworkAvailable(this)) {
                 // user de l'api (admin/admin)
                 try {
                     this.PBLogin.setVisibility(View.VISIBLE);
-                    requestContentTask task = new requestContentTask(ETUsername.getText().toString(), ETPassword.getText().toString(), this);
+                    List<NameValuePair> nameValuePairs = new ArrayList<>(3);
+                    nameValuePairs.add(new BasicNameValuePair("action", "login"));
+                    nameValuePairs.add(new BasicNameValuePair("login", ETUsername.getText().toString()));
+                    nameValuePairs.add(new BasicNameValuePair("password",  ETPassword.getText().toString()));
+
+                    requestContentTask task = new requestContentTask(this, nameValuePairs);
                     task.execute("http://supinfo.steve-colinet.fr/supcooking/");
 
                     //URL supintox = new URL("http://supinfo.steve-colinet.fr/supcooking/?action=login&login=" + ETUsername.getText().toString() + "&password=" + ETPassword.getText().toString());
                     //HttpURLConnection cnx = (HttpURLConnection) supintox.openConnection();
-
 
                 }catch (Exception e){
                     Log.d("Error", e.getMessage());
@@ -98,42 +106,28 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     public void onClickRegister(View v) {
         Intent intent = new Intent(this, RegisterActivity.class);
         startActivity(intent);
     }
 
-    private boolean isNetworkAvailable() {
-        ConnectivityManager cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-    }
-
-    public void messageAlert(String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(message)
-                .setTitle("Erreur");
-
-        builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
 
 
+
+
+
+
+    // Class pour traitement des données
     @SuppressLint("StaticFieldLeak")
     public class requestContentTask extends AsyncTask<String, Void, String> {
-        protected String login;
-        protected String password;
+
+
+        List<NameValuePair> nameValuePairs;
         protected Activity activity;
 
-        public requestContentTask(String login, String password, Activity activity) {
-            this.login = login;
-            this.password = password;
+        public requestContentTask(Activity activity, List<NameValuePair> nameValuePairs) {
+            this.nameValuePairs = nameValuePairs;
             this.activity = activity;
         }
 
@@ -146,10 +140,7 @@ public class MainActivity extends AppCompatActivity {
 
             InputStream instream = null;
             try {
-                List<NameValuePair> nameValuePairs = new ArrayList<>(3);
-                nameValuePairs.add(new BasicNameValuePair("action", "login"));
-                nameValuePairs.add(new BasicNameValuePair("login", login));
-                nameValuePairs.add(new BasicNameValuePair("password", password));
+
                 httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
                 response = httpclient.execute(httppost);
 
@@ -193,15 +184,14 @@ public class MainActivity extends AppCompatActivity {
                 if (!result.contains("#745") && json.getString("success").equalsIgnoreCase("true")) {
                     // Construction de mon objet User à partir des données Json
                     User u = new User(json);
+
                     Intent intent = new Intent(activity.getBaseContext(), RecipesActivity.class);
                     intent.putExtra("currentUser", u);
+
                     activity.startActivity(intent);
-
-                    // Construction de mon objet Recipe à partir des données Json
-
                 }
                 else {
-                    messageAlert("Utilisateur introuvable, \rVeuillez rééssayer.");
+                    messageAlert("Utilisateur introuvable, \rVeuillez rééssayer.", activity);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
