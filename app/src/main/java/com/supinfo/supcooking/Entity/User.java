@@ -17,7 +17,7 @@ public class User implements Serializable {
     private String phoneNumber;
     private String firstname;
     private String lastname;
-    private String postalCode;
+    private String postalAddress;
     private String email;
 
 
@@ -35,9 +35,6 @@ public class User implements Serializable {
     }
 
     public void setPassword(String password) {
-
-        MessageDigest digest = null;
-
         this.password = SHA256(password);
     }
 
@@ -65,12 +62,12 @@ public class User implements Serializable {
         this.lastname = lastname;
     }
 
-    public String getPostalCode() {
-        return postalCode;
+    public String getPostalAddress() {
+        return postalAddress;
     }
 
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
+    public void setPostalAddress(String postalCode) {
+        this.postalAddress = postalCode;
     }
 
     public String getEmail() {
@@ -97,7 +94,7 @@ public class User implements Serializable {
         this.setPhoneNumber(phoneNumber);
         this.setFirstname(firstname);
         this.setLastname(lastname);
-        this.setPostalCode(postalCode);
+        this.setPostalAddress(postalCode);
         this.setEmail(email);
     }
     public User(JSONObject json){
@@ -108,7 +105,7 @@ public class User implements Serializable {
             this.setFirstname(json.getJSONObject("user").getString("lastName"));
             this.setLastname(json.getJSONObject("user").getString("firstName"));
             this.setEmail(json.getJSONObject("user").getString("email"));
-            this.setPostalCode(json.getJSONObject("user").getString("address"));
+            this.setPostalAddress(json.getJSONObject("user").getString("address"));
         }
         catch (Exception ignored){
 

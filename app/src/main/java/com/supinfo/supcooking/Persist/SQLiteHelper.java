@@ -26,7 +26,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
     public static final String COLUMN_PHONENUMBER = "phoneNumber";
     public static final String COLUMN_FIRSTNAME = "firstname";
     public static final String COLUMN_LASTNAME = "lastname";
-    public static final String COLUMN_POSTALCODE = "postalcode";
+    public static final String COLUMN_POSTALADDRESS = "postalAddress";
     public static final String COLUMN_EMAIL = "email";
 
     // Commande sql pour la création de la base de données
@@ -38,7 +38,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
             + COLUMN_PHONENUMBER + " text , "
             + COLUMN_FIRSTNAME + " text , "
             + COLUMN_LASTNAME + " text , "
-            + COLUMN_POSTALCODE + " text, "
+            + COLUMN_POSTALADDRESS + " text, "
             + COLUMN_EMAIL + " text not null) ";
 
 
