@@ -1,5 +1,7 @@
 package com.supinfo.supcooking.Entity;
 
+import org.json.JSONObject;
+
 import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -98,7 +100,21 @@ public class User implements Serializable {
         this.setPostalCode(postalCode);
         this.setEmail(email);
     }
-    
+    public User(JSONObject json){
+        try{
+            this.setUsername(json.getJSONObject("user").getString("username"));
+            this.setUsername(json.getJSONObject("user").getString("password"));
+            this.setPhoneNumber(json.getJSONObject("user").getString("phoneNumber"));
+            this.setFirstname(json.getJSONObject("user").getString("lastName"));
+            this.setLastname(json.getJSONObject("user").getString("firstName"));
+            this.setEmail(json.getJSONObject("user").getString("email"));
+            this.setPostalCode(json.getJSONObject("user").getString("address"));
+        }
+        catch (Exception ignored){
+
+        }
+
+    }
     private static String SHA256(String password){
         String generatedPassword = null;
         try {
