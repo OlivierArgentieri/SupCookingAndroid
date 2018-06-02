@@ -28,9 +28,9 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         db = new SQLiteHelper(this);
         db.getAll();
-        this.ETemail = findViewById(R.id.ETEmail);
-        this.ETpassword = findViewById(R.id.ETPassword);
-        this.ETpseudo = findViewById(R.id.ETPseudo);
+        this.ETemail = findViewById(R.id.ETRegisterEmail);
+        this.ETpassword = findViewById(R.id.ETRegisterPassword);
+        this.ETpseudo = findViewById(R.id.ETRegisterUsername);
     }
 
     public void onClickRegister(View v){

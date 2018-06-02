@@ -13,7 +13,7 @@
         tools:layout_editor_absoluteY="79dp">
 
         <TextView
-            android:id="@+id/Title"
+            android:id="@+id/TVRegisterTitle"
             android:layout_width="wrap_content"
             android:layout_height="25dp"
             android:layout_marginTop="20dp"
@@ -23,75 +23,75 @@
             android:textColor="@color/colorTitle"/>
 
         <TextView
-            android:id="@+id/textViewPseudo"
+            android:id="@+id/textViewUsername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/ETPseudo"
-            android:layout_alignBottom="@+id/ETPseudo"
+            android:layout_alignBaseline="@+id/ETRegisterUsername"
+            android:layout_alignBottom="@+id/ETRegisterUsername"
             android:layout_marginEnd="20dp"
             android:layout_marginRight="20dp"
-            android:layout_toLeftOf="@+id/BTNRegister"
-            android:layout_toStartOf="@+id/BTNRegister"
+            android:layout_toLeftOf="@+id/BTNRegisterRegister"
+            android:layout_toStartOf="@+id/BTNRegisterRegister"
             android:text="@string/text_view_pseudo_activity_register"
             android:textColor="@color/colorTextView" />
 
         <EditText
-            android:id="@+id/ETPseudo"
+            android:id="@+id/ETRegisterUsername"
             android:layout_width="200dp"
             android:layout_height="50dp"
-            android:layout_alignLeft= "@id/Title"
+            android:layout_alignLeft= "@id/TVRegisterTitle"
             android:layout_marginTop="75dp"
             android:inputType="text"
             android:textColor="@color/colorTitle"
-            android:layout_alignStart="@id/Title" />
+            android:layout_alignStart="@id/TVRegisterTitle" />
 
 
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/ETEmail"
-            android:layout_alignBottom="@+id/ETEmail"
-            android:layout_alignEnd="@+id/textViewPassword"
-            android:layout_alignRight="@+id/textViewPassword"
+            android:layout_alignBaseline="@+id/ETRegisterEmail"
+            android:layout_alignBottom="@+id/ETRegisterEmail"
+            android:layout_alignEnd="@+id/TVRegisterPassword"
+            android:layout_alignRight="@+id/TVRegisterPassword"
             android:text="@string/text_view_email_activity_register"
             android:textColor="@color/colorTextView" />
 
         <EditText
-            android:id="@+id/ETEmail"
+            android:id="@+id/ETRegisterEmail"
             android:layout_width="200dp"
             android:layout_height="50dp"
-            android:layout_alignLeft= "@id/Title"
+            android:layout_alignLeft= "@id/TVRegisterTitle"
             android:layout_marginTop="150dp"
             android:inputType="textEmailAddress"
             android:textColor="@color/colorTitle"
-            android:layout_alignStart="@id/Title"/>
+            android:layout_alignStart="@id/TVRegisterTitle"/>
 
         <TextView
-            android:id="@+id/textViewPassword"
+            android:id="@+id/TVRegisterPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/ETPassword"
-            android:layout_alignBottom="@+id/ETPassword"
+            android:layout_alignBaseline="@+id/ETRegisterPassword"
+            android:layout_alignBottom="@+id/ETRegisterPassword"
             android:layout_marginEnd="20dp"
             android:layout_marginRight="20dp"
-            android:layout_toLeftOf="@+id/BTNRegister"
-            android:layout_toStartOf="@+id/BTNRegister"
+            android:layout_toLeftOf="@+id/BTNRegisterRegister"
+            android:layout_toStartOf="@+id/BTNRegisterRegister"
             android:text="@string/text_view_password_activity_register"
             android:textColor="@color/colorTextView" />
 
         <EditText
-            android:id="@+id/ETPassword"
+            android:id="@+id/ETRegisterPassword"
             android:layout_width="200dp"
             android:layout_height="50dp"
-            android:layout_alignLeft= "@id/Title"
+            android:layout_alignLeft= "@id/TVRegisterTitle"
             android:layout_marginTop="225dp"
             android:inputType="textPassword"
             android:textColor="@color/colorTitle"
-            android:layout_alignStart="@id/Title"/>
+            android:layout_alignStart="@id/TVRegisterTitle"/>
 
         <Button
-            android:id="@+id/BTNRegister"
+            android:id="@+id/BTNRegisterRegister"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_alignParentBottom="true"
@@ -101,7 +101,7 @@
             android:text="@string/text_button_Register_activity_register" />
 
         <Button
-            android:id="@+id/BTNLogin"
+            android:id="@+id/BTNRegisterLogin"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_alignParentBottom="true"
