@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         db = new SQLiteHelper(this);
-        db.getAll();
+        db.getAllUser();
         this.ETUsername = findViewById(R.id.ETLoginUsername);
         this.ETPassword = findViewById(R.id.ETLoginPassword);
         this.PBLogin = findViewById(R.id.PBLogin);

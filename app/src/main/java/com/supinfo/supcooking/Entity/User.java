@@ -5,6 +5,8 @@ import org.json.JSONObject;
 import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by User on 30/05/2018.
@@ -19,7 +21,15 @@ public class User implements Serializable {
     private String lastname;
     private String postalAddress;
     private String email;
+    private List<Recipe> recipes;
 
+    public List<Recipe> getRecipes() {
+        return recipes;
+    }
+
+    public void setRecipes(List<Recipe> recipes) {
+        this.recipes = recipes;
+    }
 
     public String getUsername() {
         return username;
@@ -86,6 +96,7 @@ public class User implements Serializable {
         this.setEmail(email);
         this.setPassword(password);
         this.setUsername(username);
+        this.setRecipes(new ArrayList<Recipe>());
     }
 
     public User(String username, String password,  String phoneNumber, String firstname, String lastname, String postalCode,  String email){
@@ -96,6 +107,7 @@ public class User implements Serializable {
         this.setLastname(lastname);
         this.setPostalAddress(postalCode);
         this.setEmail(email);
+        this.setRecipes(new ArrayList<Recipe>());
     }
     public User(JSONObject json){
         try{
@@ -106,6 +118,7 @@ public class User implements Serializable {
             this.setLastname(json.getJSONObject("user").getString("firstName"));
             this.setEmail(json.getJSONObject("user").getString("email"));
             this.setPostalAddress(json.getJSONObject("user").getString("address"));
+            this.setRecipes(new ArrayList<Recipe>()); // todo le faire avec le JSON
         }
         catch (Exception ignored){
 

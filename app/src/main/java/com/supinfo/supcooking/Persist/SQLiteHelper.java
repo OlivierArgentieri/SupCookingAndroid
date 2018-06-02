@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.supinfo.supcooking.Entity.Recipe;
 import com.supinfo.supcooking.Entity.User;
 
 /**
@@ -16,11 +17,12 @@ import com.supinfo.supcooking.Entity.User;
 public class SQLiteHelper extends SQLiteOpenHelper{
 
     private static final int DATABASE_VERSION = 1;
-    private static final String DATABASE_NAME = "users.db";
+    private static final String DATABASE_NAME = "supcooking.db";
 
-    public static final String TABLE_NAME = "user";
+    // Table User
+    public static final String TABLE_USER = "user";
 
-    public static final String COLUMN_ID = "_id";
+    public static final String COLUMN_ID_USER = "_idUser";
     public static final String COLUMN_USERNAME = "username";
     public static final String COLUMN_PASSWORD = "password";
     public static final String COLUMN_PHONENUMBER = "phoneNumber";
@@ -29,10 +31,10 @@ public class SQLiteHelper extends SQLiteOpenHelper{
     public static final String COLUMN_POSTALADDRESS = "postalAddress";
     public static final String COLUMN_EMAIL = "email";
 
-    // Commande sql pour la création de la base de données
-    private static final String DATABASE_CREATE = "create table "
-            + TABLE_NAME + "("
-            + COLUMN_ID + " integer primary key autoincrement, "
+    // Commande sql pour la création de la Table User
+    private static final String DATABASE_CREATE_USER = "create table "
+            + TABLE_USER + "("
+            + COLUMN_ID_USER + " integer primary key autoincrement, "
             + COLUMN_USERNAME + " text not null, "
             + COLUMN_PASSWORD + " text not null, "
             + COLUMN_PHONENUMBER + " text , "
@@ -41,6 +43,35 @@ public class SQLiteHelper extends SQLiteOpenHelper{
             + COLUMN_POSTALADDRESS + " text, "
             + COLUMN_EMAIL + " text not null) ";
 
+    // Table User
+    public static final String TABLE_RECIPE = "recipe";
+
+    public static final String COLUMN_ID_RECIPE = "_idRecipe";
+    public static final String COLUMN_NAME = "name";
+    public static final String COLUMN_TYPE = "type";
+    public static final String COLUMN_COOKINGTIME = "cookingTime";
+    public static final String COLUMN_PREPARATIONTTIME = "preparationTime";
+    public static final String COLUMN_INGREDIENTS = "ingredients";
+    public static final String COLUMN_PREPARATIONSTEPS = "preparationSteps";
+    public static final String COLUMN_RATE = "rate";
+    public static final String COLUMN_PICTURE = "picture";
+    public static final String COLUMN_USER = "user";
+
+    // Commande sql pour la création de la Table User
+    private static final String DATABASE_CREATE_RECIPE = "create table "
+            + TABLE_RECIPE + "("
+            + COLUMN_ID_RECIPE + " integer primary key autoincrement, "
+            + COLUMN_NAME + " text not null, "
+            + COLUMN_TYPE + " text not null, "
+            + COLUMN_COOKINGTIME + " integer not null, "
+            + COLUMN_PREPARATIONTTIME + " integer not null, "
+            + COLUMN_INGREDIENTS + " text not null, "
+            + COLUMN_PREPARATIONSTEPS + " text not null, "
+            + COLUMN_RATE + " integer default 0, "
+            + COLUMN_PICTURE + " text,"
+            + COLUMN_USER + " integer,"
+            + "FOREIGN KEY(user) REFERENCES user(_idUser)) ";
+
 
     public SQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -48,7 +79,8 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase database) {
-        database.execSQL(DATABASE_CREATE);
+        database.execSQL(DATABASE_CREATE_USER);
+        database.execSQL(DATABASE_CREATE_RECIPE);
     }
 
     @Override
@@ -56,26 +88,27 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         Log.w(SQLiteHelper.class.getName(),
                 "Upgrading database from version " + oldVersion + " to "
                         + newVersion + ", which will destroy all old data");
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_RECIPE);
         onCreate(db);
     }
 
-    public boolean insertData(String password, String email, String username){
+    // methode User
+    public boolean insertUser(String password, String email, String username){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
         contentValues.put(COLUMN_EMAIL, email);
         contentValues.put(COLUMN_PASSWORD, password);
         contentValues.put(COLUMN_USERNAME, username);
-        long result = db.insert(TABLE_NAME, null, contentValues);
+        long result = db.insert(TABLE_USER, null, contentValues);
         if(result == -1) { return false; }
         else {return true; }
     }
-
-    public void getAll(){
+    public void getAllUser(){
         Log.d("BDD", "Infos de la BDD");
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor result = db.rawQuery("select * from " + TABLE_NAME, null);
+        Cursor result = db.rawQuery("select * from " + TABLE_USER, null);
         if (result.getCount() > 0){
 
         while(result.moveToNext()) {
@@ -85,19 +118,10 @@ public class SQLiteHelper extends SQLiteOpenHelper{
             }
         }
     }
-
-    public boolean isExist(User user){
-        SQLiteDatabase db = this.getWritableDatabase();
-        String[] params = new String[]{  user.getEmail(), user.getUsername()};
-        String sql = "select email, username from " + TABLE_NAME + " WHERE email LIKE ?  AND username LIKE ?";
-        Cursor result = db.rawQuery( sql , params);
-        return result.getCount() > 0;
-    }
-
     public User getUser(User user){
         SQLiteDatabase db = this.getWritableDatabase();
         String[] params = new String[]{  user.getEmail(), user.getUsername()};
-        String sql = "select * from " + TABLE_NAME + " WHERE email LIKE ?  AND username LIKE ?";
+        String sql = "select * from " + TABLE_USER + " WHERE email LIKE ?  AND username LIKE ?";
         Cursor result = db.rawQuery( sql , params);
         if (result.getCount() > 0){
             User u = new User(result.getString(1), result.getString(2), result.getString(3), result.getString(4), result.getString(5), result.getString(6), result.getString(7));
@@ -105,4 +129,23 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         }
         return null;
     }
+
+    // Methode Recipe
+    public boolean insertRecipe(Recipe recipe){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(COLUMN_NAME, recipe.getName());
+        contentValues.put(COLUMN_TYPE, recipe.getType());
+        contentValues.put(COLUMN_COOKINGTIME, recipe.getCookingTime());
+        contentValues.put(COLUMN_PREPARATIONTTIME, recipe.getPreparationTime());
+        contentValues.put(COLUMN_INGREDIENTS, recipe.getIngredients());
+        contentValues.put(COLUMN_PREPARATIONSTEPS, recipe.getPreparationSteps());
+        contentValues.put(COLUMN_RATE, recipe.getRate());
+        contentValues.put(COLUMN_PICTURE, recipe.getPicture());
+        long result = db.insert(TABLE_USER, null, contentValues);
+        if(result == -1) { return false; }
+        else {return true; }
+    }
+
 }

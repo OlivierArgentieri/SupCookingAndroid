@@ -27,7 +27,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         db = new SQLiteHelper(this);
-        db.getAll();
+        db.getAllUser();
         this.ETemail = findViewById(R.id.ETRegisterEmail);
         this.ETpassword = findViewById(R.id.ETRegisterPassword);
         this.ETpseudo = findViewById(R.id.ETRegisterUsername);
@@ -44,12 +44,12 @@ public class RegisterActivity extends AppCompatActivity {
             messageAlert("Votre addresses email ne respecte pas la bonne syntax, \tmerci de rééssayer.");
         }
 
-        else if(db.isExist(u)){
+        else if(db.getUser(u) != null){
            messageAlert("Utilisateur déja éxistant ! \nEssayez de vous connecter.");
         }
 
         else{
-            db.insertData(u.getPassword(), u.getEmail(), u.getUsername());
+            db.insertUser(u.getPassword(), u.getEmail(), u.getUsername());
         }
 
     }
