@@ -7,14 +7,18 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AlertDialog;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
 public abstract class Util {
-    public static void messageAlert(String message, Activity activity) {
+    public static void messageAlert(String title, String message, Activity activity) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setMessage(message).setTitle("Erreur");
+        builder.setMessage(message).setTitle(title);
 
         builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
@@ -51,5 +55,26 @@ public abstract class Util {
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+    }
+
+    public static String convertStreamToString(InputStream is) {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        StringBuilder sb = new StringBuilder();
+
+        String line;
+        try {
+            while ((line = reader.readLine()) != null) {
+                sb.append(line).append('\n');
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return sb.toString();
     }
 }

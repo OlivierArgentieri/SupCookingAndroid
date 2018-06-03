@@ -19,7 +19,6 @@ import static com.supinfo.supcooking.Util.Util.messageAlert;
 
 
 public class RegisterActivity extends AppCompatActivity {
-
     SQLiteHelper db;
     EditText ETemail;
     EditText ETpassword;
@@ -40,19 +39,20 @@ public class RegisterActivity extends AppCompatActivity {
         User u = new User(ETemail.getText().toString().trim(), ETpassword.getText().toString().trim(), ETpseudo.getText().toString().trim());
 
         if(ETemail.getText().toString().trim().isEmpty() || ETpassword.getText().toString().trim().isEmpty() || ETpseudo.getText().toString().trim().isEmpty()){
-            messageAlert("Tout les champs sont obligatoire, \tmerci de rééssayer.", this);
+            messageAlert("Erreur","Tout les champs sont obligatoire, \tmerci de rééssayer.", this);
         }
 
         else if(!isEmailValid(ETemail.getText().toString().trim())){
-            messageAlert("Votre addresses email ne respecte pas la bonne syntax, \tmerci de rééssayer.", this );
+            messageAlert("Erreur","Votre addresses email ne respecte pas la bonne syntax, \tmerci de rééssayer.", this );
         }
 
         else if(db.getUser(u) != null){
-           messageAlert("Utilisateur déja éxistant ! \nEssayez de vous connecter.", this);
+           messageAlert("Erreur","Utilisateur déja éxistant ! \nEssayez de vous connecter.", this);
         }
 
         else{
             db.insertUser(u.getPassword(), u.getEmail(), u.getUsername());
+            messageAlert("Information","Utilisateur bien enregistré ! \nEssayez de vous connecter.", this);
         }
     }
 
@@ -60,4 +60,6 @@ public class RegisterActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
+
+
 }

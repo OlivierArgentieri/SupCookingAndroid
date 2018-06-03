@@ -2,11 +2,8 @@ package com.supinfo.supcooking;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -18,7 +15,6 @@ import android.widget.ProgressBar;
 
 import com.supinfo.supcooking.Entity.User;
 import com.supinfo.supcooking.Persist.SQLiteHelper;
-import com.supinfo.supcooking.Util.Util;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -38,9 +34,9 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.supinfo.supcooking.Util.Util.convertStreamToString;
 import static com.supinfo.supcooking.Util.Util.isNetworkAvailable;
 import static com.supinfo.supcooking.Util.Util.messageAlert;
-
 
 public class MainActivity extends AppCompatActivity {
 
@@ -63,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickLogin(View v) {
         if (ETUsername.getText().toString().trim().isEmpty() || ETPassword.getText().toString().trim().isEmpty()) {
-            messageAlert("Tout les champs sont obligatoire, \tmerci de rééssayer.", this);
+            messageAlert("Erreur", "Tout les champs sont obligatoire, \tmerci de rééssayer.", this);
         } else {
             if (isNetworkAvailable(this)) {
                 // user de l'api (admin/admin)
@@ -74,38 +70,32 @@ public class MainActivity extends AppCompatActivity {
                     nameValuePairs.add(new BasicNameValuePair("login", ETUsername.getText().toString()));
                     nameValuePairs.add(new BasicNameValuePair("password",  ETPassword.getText().toString()));
 
+                    // Création de la task
                     requestContentTask task = new requestContentTask(this, nameValuePairs);
                     task.execute("http://supinfo.steve-colinet.fr/supcooking/");
-
-                    //URL supintox = new URL("http://supinfo.steve-colinet.fr/supcooking/?action=login&login=" + ETUsername.getText().toString() + "&password=" + ETPassword.getText().toString());
-                    //HttpURLConnection cnx = (HttpURLConnection) supintox.openConnection();
 
                 }catch (Exception e){
                     Log.d("Error", e.getMessage());
                 }
-
-
             } else {
                 // user en local
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage("Aucune connection internet trouvé, \rl'application va essayé de vous identifier en local.")
-                        .setTitle("Information");
+                builder.setMessage("Aucune connection internet trouvé, \rl'application va essayé de vous identifier en local.").setTitle("Information");
 
                 builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
+
+                        // Todo insérer test local cnx user
                         Intent intent = new Intent(MainActivity.super.getBaseContext(), RecipesActivity.class);
                         startActivity(intent);
                     }
                 });
                 AlertDialog dialog = builder.create();
                 dialog.show();
-
             }
-
         }
     }
-
 
     public void onClickRegister(View v) {
         Intent intent = new Intent(this, RegisterActivity.class);
@@ -113,15 +103,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
-
-
-
     // Class pour traitement des données
     @SuppressLint("StaticFieldLeak")
     public class requestContentTask extends AsyncTask<String, Void, String> {
-
 
         List<NameValuePair> nameValuePairs;
         protected Activity activity;
@@ -156,26 +140,6 @@ public class MainActivity extends AppCompatActivity {
             return result;
         }
 
-        private String convertStreamToString(InputStream is) {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-            StringBuilder sb = new StringBuilder();
-
-            String line;
-            try {
-                while ((line = reader.readLine()) != null) {
-                    sb.append(line).append('\n');
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                try {
-                    is.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            return sb.toString();
-        }
 
         @Override
         protected void onPostExecute(String result) {
@@ -191,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
                     activity.startActivity(intent);
                 }
                 else {
-                    messageAlert("Utilisateur introuvable, \rVeuillez rééssayer.", activity);
+                    messageAlert("Erreur","Utilisateur introuvable, \rVeuillez rééssayer.", activity);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

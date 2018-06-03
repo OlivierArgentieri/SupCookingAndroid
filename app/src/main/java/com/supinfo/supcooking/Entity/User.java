@@ -112,7 +112,7 @@ public class User implements Serializable {
     public User(JSONObject json){
         try{
             this.setUsername(json.getJSONObject("user").getString("username"));
-            this.setUsername(json.getJSONObject("user").getString("password"));
+            this.setPassword(json.getJSONObject("user").getString("password"));
             this.setPhoneNumber(json.getJSONObject("user").getString("phoneNumber"));
             this.setFirstname(json.getJSONObject("user").getString("lastName"));
             this.setLastname(json.getJSONObject("user").getString("firstName"));

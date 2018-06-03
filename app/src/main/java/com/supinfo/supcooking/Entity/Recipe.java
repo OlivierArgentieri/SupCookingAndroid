@@ -1,9 +1,12 @@
 package com.supinfo.supcooking.Entity;
 
+import org.json.JSONObject;
+
 import java.io.Serializable;
 
 public class Recipe implements Serializable {
 
+    private int id;
     private String name;
     private String type;
     private Integer cookingTime;
@@ -13,6 +16,14 @@ public class Recipe implements Serializable {
     private Integer rate;
     private String picture;
 
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -78,7 +89,8 @@ public class Recipe implements Serializable {
         this.picture = picture;
     }
 
-    public Recipe(String name, String type, Integer cookingTime, Integer preparationTime, String ingredients, String preparationSteps, Integer rate, String picture) {
+    public Recipe(int id, String name, String type, Integer cookingTime, Integer preparationTime, String ingredients, String preparationSteps, Integer rate, String picture) {
+        this.id = id;
         this.name = name;
         this.type = type;
         this.cookingTime = cookingTime;
@@ -90,5 +102,18 @@ public class Recipe implements Serializable {
     }
 
 
-
+    public Recipe(JSONObject json){
+        try{
+            this.id = Integer.parseInt(json.get("id").toString());
+            this.name = json.get("name").toString();
+            this.type = json.get("type").toString();
+            this.cookingTime = Integer.parseInt(json.get("cookingTime").toString());
+            this.preparationTime = Integer.parseInt(json.get("preparationtTime").toString());
+            this.ingredients = json.get("ingredients").toString();
+            this.preparationSteps = json.get("preparationSteps").toString();
+            this.rate = Integer.parseInt(json.get("rate").toString());
+            this.picture = json.get("picture").toString();
+        }
+        catch (Exception ignore){}
+    }
 }

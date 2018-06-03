@@ -117,20 +117,27 @@ public class SQLiteHelper extends SQLiteOpenHelper{
                 Log.d("Password", result.getString(2));
             }
         }
+        db.close();
     }
     public User getUser(User user){
         SQLiteDatabase db = this.getWritableDatabase();
         String[] params = new String[]{  user.getEmail(), user.getUsername()};
-        String sql = "select * from " + TABLE_USER + " WHERE email LIKE ?  AND username LIKE ?";
+        String sql = "select * from " + TABLE_USER + " WHERE email LIKE ?  OR username LIKE ?";
         Cursor result = db.rawQuery( sql , params);
+
         if (result.getCount() > 0){
-            User u = new User(result.getString(1), result.getString(2), result.getString(3), result.getString(4), result.getString(5), result.getString(6), result.getString(7));
+            result.moveToNext();
+            User u = new User( result.getString(7), result.getString(2), result.getString(1));
+            db.close();
             return u;
         }
+        db.close();
+
         return null;
+
     }
 
-    // Methode Recipe
+    // Method Recipe
     public boolean insertRecipe(Recipe recipe){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
