@@ -10,7 +10,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ListView;
 
+import com.supinfo.supcooking.Adapter.RowRecipe;
+import com.supinfo.supcooking.Adapter.RowRecipeAdapter;
 import com.supinfo.supcooking.Entity.Recipe;
 import com.supinfo.supcooking.Entity.User;
 import com.supinfo.supcooking.R;
@@ -36,9 +40,30 @@ import static com.supinfo.supcooking.Util.Util.messageAlert;
 
 public class Page2 extends Fragment{
     protected View view;
+
+    // list recette
+    protected ListView listRecipe;
+
+    //ligne recette
+    protected ImageView imgRecette;
+
+    // adapter pour chaque item de la listView
+    protected static RowRecipeAdapter adapter;
+
+    public static void setAdapter(RowRecipeAdapter adapter) {
+        Page2.adapter = adapter;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this.view = inflater.inflate(R.layout.activity_page2, container, false);
+
+        // List recette
+        this.listRecipe = this.view.findViewById(R.id.LVListRecipe);
+
+        // Ligne de cahque recette
+        imgRecette = this.view.findViewById(R.id.IMGVRowRecipe);
+
         // construire la vue
 
         User u = (User) getActivity().getIntent().getSerializableExtra("currentUser");
@@ -50,7 +75,6 @@ public class Page2 extends Fragment{
 
         requestContentTask task = new requestContentTask(this.getActivity(), nameValuePairs);
         task.execute("http://supinfo.steve-colinet.fr/supcooking/");
-        Log.d("StringExtra", u.getPassword());
 
         return this.view;
     }
@@ -113,7 +137,16 @@ public class Page2 extends Fragment{
                       JSONObject temp = new JSONObject(json.getJSONArray("recipes").get(i).toString());
                       recipes.add(new Recipe(temp));
                    }
-                    Log.d("OUI", "OUI");
+                   // todo faire la liste des recettes
+                    ArrayList<RowRecipe> rowRecipes = new ArrayList<RowRecipe>();
+
+                    for (Recipe r : recipes){
+                        rowRecipes.add(new RowRecipe(r.getPicture(), r.getName(), r.getType(), r.getRate()));
+                    }
+                    Log.d("SIZE DE CETTE DE L", String.valueOf(recipes.size()));
+                    setAdapter(new RowRecipeAdapter(getContext(), rowRecipes));
+                    listRecipe.setAdapter(adapter);
+
                    //Intent intent = new Intent(activity.getBaseContext(), RecipesActivity.class);
                  //   intent.putExtra("currentUser", u);
 
@@ -129,4 +162,5 @@ public class Page2 extends Fragment{
            // activity.findViewById(R.id.PBLogin).setVisibility(View.GONE);
         }
     }
+
 }

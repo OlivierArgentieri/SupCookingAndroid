@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:context="com.supinfo.supcooking.RecipesActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_view_title_list_recipe_online"
+        android:id="@+id/TVTitleListRecipe"
+        android:layout_centerHorizontal="true"
+        android:textSize="15sp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/colorTitle"
+        />
+
+    <ListView
+        android:id="@+id/LVListRecipe"
+        android:layout_below="@+id/TVTitleListRecipe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:dividerHeight="5dp"
+        android:divider="#FFFFFF"
+        />
+
+</RelativeLayout>

@@ -9,4 +9,6 @@
     <string name="text_view_password_activity_login">Password :</string>
     <string name="text_view_username_activity_login">Username :</string>
     <string name="text_view_pseudo_activity_register">Username :</string>
+    <string name="image_view_description_row_recipe">RecipeImage</string>
+    <string name="text_view_title_list_recipe_online">Recette(s) en ligne :</string>
 </resources>

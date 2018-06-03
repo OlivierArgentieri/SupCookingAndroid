@@ -5,10 +5,5 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".RecipesActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="PAGE 2 "/>
-
+    <include layout="@layout/list_recipe"/>
 </RelativeLayout>

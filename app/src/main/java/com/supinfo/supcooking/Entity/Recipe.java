@@ -13,7 +13,7 @@ public class Recipe implements Serializable {
     private Integer preparationTime;
     private String ingredients;
     private String preparationSteps;
-    private Integer rate;
+    private Float rate;
     private String picture;
 
 
@@ -73,11 +73,11 @@ public class Recipe implements Serializable {
         this.preparationSteps = preparationSteps;
     }
 
-    public Integer getRate() {
+    public Float getRate() {
         return rate;
     }
 
-    public void setRate(Integer rate) {
+    public void setRate(Float rate) {
         this.rate = rate;
     }
 
@@ -89,7 +89,7 @@ public class Recipe implements Serializable {
         this.picture = picture;
     }
 
-    public Recipe(int id, String name, String type, Integer cookingTime, Integer preparationTime, String ingredients, String preparationSteps, Integer rate, String picture) {
+    public Recipe(int id, String name, String type, Integer cookingTime, Integer preparationTime, String ingredients, String preparationSteps, Float rate, String picture) {
         this.id = id;
         this.name = name;
         this.type = type;
@@ -111,7 +111,7 @@ public class Recipe implements Serializable {
             this.preparationTime = Integer.parseInt(json.get("preparationtTime").toString());
             this.ingredients = json.get("ingredients").toString();
             this.preparationSteps = json.get("preparationSteps").toString();
-            this.rate = Integer.parseInt(json.get("rate").toString());
+            this.rate = Float.parseFloat(json.get("rate").toString());
             this.picture = json.get("picture").toString();
         }
         catch (Exception ignore){}
