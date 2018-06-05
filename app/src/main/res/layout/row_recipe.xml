@@ -50,7 +50,6 @@
         android:numStars="5"
         android:rating="0"
         android:layout_alignLeft="@id/TVRowRecipeType"
-
-        />
+        android:layout_alignStart="@id/TVRowRecipeType" />
 
 </RelativeLayout>

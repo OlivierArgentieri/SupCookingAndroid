@@ -112,7 +112,12 @@ public class Recipe implements Serializable {
             this.ingredients = json.get("ingredients").toString();
             this.preparationSteps = json.get("preparationSteps").toString();
             this.rate = Float.parseFloat(json.get("rate").toString());
-            this.picture = json.get("picture").toString();
+            if (json.get("picture").toString().equalsIgnoreCase("null"))
+            {
+                this.picture = "https://media.discordapp.net/attachments/215765926392496128/452898581758738462/DSC_0172.jpg";
+            }else {
+                this.picture = json.get("picture").toString();
+            }
         }
         catch (Exception ignore){}
     }

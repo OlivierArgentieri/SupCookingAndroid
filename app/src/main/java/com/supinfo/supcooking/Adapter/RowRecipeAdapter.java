@@ -52,12 +52,12 @@ public class RowRecipeAdapter extends ArrayAdapter<RowRecipe> {
             viewHolder.type.setText(rowRecipe.type);
             viewHolder.rate.setRating(rowRecipe.rate);
 
-            if (!rowRecipe.imgUrl.equalsIgnoreCase("null")){
+         //   if (!rowRecipe.imgUrl.equalsIgnoreCase("null")){
                 viewHolder.imgRecipe.setImageBitmap(Util.getBitmapFromURL(rowRecipe.imgUrl));
-            }
-            else{
-                viewHolder.imgRecipe.setImageBitmap(Util.getBitmapFromURL("https://media.discordapp.net/attachments/215765926392496128/452898581758738462/DSC_0172.jpg"));
-            }
+           // }
+           // else{
+             //   viewHolder.imgRecipe.setImageBitmap(Util.getBitmapFromURL("https://media.discordapp.net/attachments/215765926392496128/452898581758738462/DSC_0172.jpg"));
+           // }
         }
 
 

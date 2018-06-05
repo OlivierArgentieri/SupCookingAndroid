@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.supinfo.supcooking.RecipeDetailActivity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxHeight="400dp"
+            android:maxWidth="400dp"
+            android:id="@+id/IMGVRecipeDetail"
+            android:layout_alignParentTop="true"
+            android:contentDescription="@string/image_view_description_row_recipe"
+            android:adjustViewBounds="true"
+            android:layout_centerHorizontal="true"/>
+
+        <RatingBar
+            android:id="@+id/RBDetailRecipe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_below="@id/IMGVRecipeDetail"
+            android:numStars="5"
+            android:rating="0"
+            android:layout_alignLeft="@id/TVRowRecipeType"
+            android:layout_alignStart="@id/TVRowRecipeType"
+            android:layout_centerHorizontal="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/TVRecipeDetailName"
+            android:text="Name"
+            android:layout_below="@id/RBDetailRecipe"
+            android:layout_centerHorizontal="true"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/TVRecipeDetailCookingTimeLabel"
+            android:text="@string/text_view_recipe_detail_type_label"
+            android:layout_below="@id/TVRecipeDetailName"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/TVRecipeDetailType"
+            android:text="Type"
+            android:layout_toRightOf="@id/TVRecipeDetailCookingTimeLabel"
+            android:layout_alignBaseline="@id/TVRecipeDetailCookingTimeLabel"
+            android:layout_toEndOf="@id/TVRecipeDetailCookingTimeLabel" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/TVRecipeDetailTypeLabel"
+            android:text="@string/text_view_recipe_detail_cooking_time_label"
+            android:layout_below="@id/TVRecipeDetailCookingTimeLabel"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/TVRecipeDetailCookingTime"
+            android:text="Temp de cuisson"
+            android:layout_below="@+id/TVRecipeDetailCookingTimeLabel"
+            android:layout_toRightOf="@+id/TVRecipeDetailTypeLabel"
+            android:layout_alignBaseline="@id/TVRecipeDetailTypeLabel"
+            android:layout_toEndOf="@+id/TVRecipeDetailTypeLabel"
+            />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/TVRecipeDetailPreparationTimeLabel"
+            android:text="@string/text_view_recipe_detail_preparation_time_label"
+            android:layout_below="@+id/TVRecipeDetailCookingTime"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/TVRecipeDetailPreparationTime"
+            android:text="Temp de préaparation"
+            android:layout_below="@+id/TVRecipeDetailCookingTimeLabel"
+            android:layout_toRightOf="@+id/TVRecipeDetailPreparationTimeLabel"
+            android:layout_alignBaseline="@id/TVRecipeDetailPreparationTimeLabel"
+            android:layout_toEndOf="@+id/TVRecipeDetailPreparationTimeLabel"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/TVRecipeDetailIngredientsLabel"
+            android:text="Ingrédients :"
+            android:layout_below="@+id/TVRecipeDetailPreparationTime"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/TVRecipeDetailIngredients"
+            android:text="@string/text_view_detail_recipe_ingredients_label"
+            android:layout_below="@+id/TVRecipeDetailCookingTimeLabel"
+            android:layout_toRightOf="@+id/TVRecipeDetailIngredientsLabel"
+            android:layout_alignBaseline="@id/TVRecipeDetailIngredientsLabel"
+            android:layout_toEndOf="@+id/TVRecipeDetailIngredientsLabel"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/TVRecipeDetailPreparationStepsLabel"
+            android:text="@string/text_view_detail_preparation_steps_label"
+            android:layout_below="@+id/TVRecipeDetailIngredients"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/TVRecipeDetailPreparationSteps"
+            android:text="Etape de pratation"
+            android:layout_below="@+id/TVRecipeDetailPreparationStepsLabel"
+            />
+
+    </RelativeLayout>
+</ScrollView>

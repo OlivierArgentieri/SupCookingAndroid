@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 
@@ -18,6 +19,7 @@ import com.supinfo.supcooking.Adapter.RowRecipeAdapter;
 import com.supinfo.supcooking.Entity.Recipe;
 import com.supinfo.supcooking.Entity.User;
 import com.supinfo.supcooking.R;
+import com.supinfo.supcooking.RecipeDetailActivity;
 import com.supinfo.supcooking.RecipesActivity;
 
 import org.apache.http.HttpEntity;
@@ -36,6 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.supinfo.supcooking.Util.Util.convertStreamToString;
+import static com.supinfo.supcooking.Util.Util.isNetworkAvailable;
 import static com.supinfo.supcooking.Util.Util.messageAlert;
 
 public class Page2 extends Fragment{
@@ -65,17 +68,21 @@ public class Page2 extends Fragment{
         imgRecette = this.view.findViewById(R.id.IMGVRowRecipe);
 
         // construire la vue
-
         User u = (User) getActivity().getIntent().getSerializableExtra("currentUser");
 
-        List<NameValuePair> nameValuePairs = new ArrayList<>(3);
-        nameValuePairs.add(new BasicNameValuePair("action", "getCooking"));
-        nameValuePairs.add(new BasicNameValuePair("login", u.getUsername()));
-        nameValuePairs.add(new BasicNameValuePair("password", u.getPassword()));
+        if (isNetworkAvailable(this.getActivity())) {
+            List<NameValuePair> nameValuePairs = new ArrayList<>(3);
+            nameValuePairs.add(new BasicNameValuePair("action", "getCooking"));
+            nameValuePairs.add(new BasicNameValuePair("login", u.getUsername()));
+            nameValuePairs.add(new BasicNameValuePair("password", u.getPassword()));
 
-        requestContentTask task = new requestContentTask(this.getActivity(), nameValuePairs);
-        task.execute("http://supinfo.steve-colinet.fr/supcooking/");
+            requestContentTask task = new requestContentTask(this.getActivity(), nameValuePairs);
+            task.execute("http://supinfo.steve-colinet.fr/supcooking/");
+        }
+        else{
+            // lire les donners de la bdd du telehpone
 
+        }
         return this.view;
     }
 
@@ -90,13 +97,9 @@ public class Page2 extends Fragment{
 
         public requestContentTask(Activity activity, List<NameValuePair> nameValuePairs) {
 
-            Log.d("doinbacktamer", "OUI");
             this.nameValuePairs = nameValuePairs;
 
-            Log.d("doinbacktamer", "OUI");
             this.activity = activity;
-
-            Log.d("doinbacktamer", "OUI");
         }
 
         @Override
@@ -131,7 +134,7 @@ public class Page2 extends Fragment{
                 JSONObject json = new JSONObject(result);
                 if (!result.contains("#745") && json.getString("success").equalsIgnoreCase("true")) {
                     // Construction de mon objet Recipe à partir des données Json
-                    List<Recipe> recipes = new ArrayList<>();
+                    final List<Recipe> recipes = new ArrayList<>();
 
                    for (int i =0 ; i<json.getJSONArray("recipes").length(); i++){
                       JSONObject temp = new JSONObject(json.getJSONArray("recipes").get(i).toString());
@@ -141,16 +144,29 @@ public class Page2 extends Fragment{
                     ArrayList<RowRecipe> rowRecipes = new ArrayList<RowRecipe>();
 
                     for (Recipe r : recipes){
-                        rowRecipes.add(new RowRecipe(r.getPicture(), r.getName(), r.getType(), r.getRate()));
+                        if (r.getPicture().equalsIgnoreCase("null")){
+                            rowRecipes.add(new RowRecipe("https://media.discordapp.net/attachments/215765926392496128/452898581758738462/DSC_0172.jpg", r.getName(), r.getType(), r.getRate()));
+                        }else{
+                            rowRecipes.add(new RowRecipe(r.getPicture(), r.getName(), r.getType(), r.getRate()));
+                        }
+
                     }
-                    Log.d("SIZE DE CETTE DE L", String.valueOf(recipes.size()));
                     setAdapter(new RowRecipeAdapter(getContext(), rowRecipes));
                     listRecipe.setAdapter(adapter);
 
-                   //Intent intent = new Intent(activity.getBaseContext(), RecipesActivity.class);
-                 //   intent.putExtra("currentUser", u);
+                    listRecipe.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l){
+                            // todo lancer la description de la recettes
+                            Log.d("index",  recipes.get(0).getPicture());
+                            Intent intent = new Intent(view.getContext(), RecipeDetailActivity.class);
+                            intent.putExtra("recipe", recipes.get(i));
+                            startActivity(intent);
 
-                  //  activity.startActivity(intent);
+                        }
+                    });
+
+
                 }
                 else {
                     messageAlert("Erreur","Utilisateur introuvable, \rVeuillez rééssayer.", activity);

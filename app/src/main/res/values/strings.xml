@@ -11,4 +11,9 @@
     <string name="text_view_pseudo_activity_register">Username :</string>
     <string name="image_view_description_row_recipe">RecipeImage</string>
     <string name="text_view_title_list_recipe_online">Recette(s) en ligne :</string>
+    <string name="text_view_recipe_detail_type_label">Sujet : </string>
+    <string name="text_view_recipe_detail_cooking_time_label">Temps de cuisson : </string>
+    <string name="text_view_recipe_detail_preparation_time_label">Temp de préparation :</string>
+    <string name="text_view_detail_recipe_ingredients_label">Temp de préaparation</string>
+    <string name="text_view_detail_preparation_steps_label">Etape de préparation :</string>
 </resources>
