@@ -2,6 +2,7 @@ package com.supinfo.supcooking.Adapter;
 
 import android.content.Context;
 
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.StrictMode;
 import android.util.Log;
@@ -53,7 +54,7 @@ public class RowRecipeAdapter extends ArrayAdapter<RowRecipe> {
             viewHolder.rate.setRating(rowRecipe.rate);
 
          //   if (!rowRecipe.imgUrl.equalsIgnoreCase("null")){
-                viewHolder.imgRecipe.setImageBitmap(Util.getBitmapFromURL(rowRecipe.imgUrl));
+                viewHolder.imgRecipe.setImageBitmap(BitmapFactory.decodeByteArray(rowRecipe.img, 0, rowRecipe.img.length));
            // }
            // else{
              //   viewHolder.imgRecipe.setImageBitmap(Util.getBitmapFromURL("https://media.discordapp.net/attachments/215765926392496128/452898581758738462/DSC_0172.jpg"));

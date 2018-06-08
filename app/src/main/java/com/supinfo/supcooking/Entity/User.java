@@ -134,7 +134,6 @@ public class User implements Serializable {
             this.setRecipes(new ArrayList<Recipe>()); // todo le faire avec le JSON
         }
         catch (Exception ignored){
-
         }
 
     }

@@ -71,7 +71,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
             + COLUMN_INGREDIENTS + " text not null, "
             + COLUMN_PREPARATIONSTEPS + " text not null, "
             + COLUMN_RATE + " integer default 0, "
-            + COLUMN_PICTURE + " text,"
+            + COLUMN_PICTURE + " blob,"
             + COLUMN_USER + " integer,"
             + "FOREIGN KEY(user) REFERENCES user(_idUser)) ";
 
@@ -195,6 +195,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         if (result.getCount() > 0){
             result.moveToNext();
             User u = new User(result.getInt(0), result.getString(7), result.getString(2), result.getString(1));
+
             return u;
         }
         return null;
@@ -233,7 +234,14 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         if (result.getCount() > 0){
             // todo faire la liste des recettes
             while(result.moveToNext()) {
-                Recipes.add(new Recipe(result.getInt(0), result.getString(1), result.getString(2), result.getInt(3), result.getInt(4), result.getString(5), result.getString(6), result.getFloat(7),  result.getString(8)));
+                Recipes.add(new Recipe(result.getInt(0), result.getString(1), result.getString(2), result.getInt(3), result.getInt(4), result.getString(5), result.getString(6), result.getFloat(7),  result.getBlob(8)));
+
+                Log.d("recipe", result.getString(1));
+                Log.d("recipe", result.getString(2));
+                Log.d("recipe", result.getString(3));
+                Log.d("recipe", result.getString(4));
+                Log.d("recipe", result.getString(5));
+                Log.d("recipe", String.valueOf(result.getBlob(8).length));
             }
         }
         return Recipes;

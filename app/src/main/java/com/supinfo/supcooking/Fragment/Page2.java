@@ -22,6 +22,7 @@ import com.supinfo.supcooking.Persist.SQLiteHelper;
 import com.supinfo.supcooking.R;
 import com.supinfo.supcooking.RecipeDetailActivity;
 import com.supinfo.supcooking.RecipesActivity;
+import com.supinfo.supcooking.Util.Util;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -70,8 +71,6 @@ public class Page2 extends Fragment {
 
         // construire la vue
         User u = (User) getActivity().getIntent().getSerializableExtra("currentUser");
-        Log.d("doinbacktamer", u.getPassword());
-        Log.d("doinbacktamer", u.getUsername());
         if (isNetworkAvailable(this.getActivity())) {
             List<NameValuePair> nameValuePairs = new ArrayList<>(3);
             nameValuePairs.add(new BasicNameValuePair("action", "getCooking"));
@@ -82,27 +81,26 @@ public class Page2 extends Fragment {
             task.execute("http://supinfo.steve-colinet.fr/supcooking/");
         }
 
-        // lire les donners de la bdd du telehpone
+        // todo lire les données de la bdd du telehpone
         SQLiteHelper db = new SQLiteHelper(getContext());
         ArrayList<RowRecipe> rowRecipes = new ArrayList<RowRecipe>();
-        final ArrayList<Recipe> recipes = db.getAllRecipe();
+        ArrayList<Recipe> recipes = db.getAllRecipe();
 
         for (Recipe r : recipes) {
-            db.insertOrUpdateRecipe(r, (User) getActivity().getIntent().getSerializableExtra("currentUser"));
-
-            // Ajout de la ligne pour la liste des recettes
             rowRecipes.add(new RowRecipe(r.getPicture(), r.getName(), r.getType(), r.getRate()));
         }
+
         setAdapter(new RowRecipeAdapter(getContext(), rowRecipes));
         listRecipe.setAdapter(adapter);
 
+        final List<Recipe> recipesl = recipes;
         listRecipe.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 // todo lancer la description de la recettes
-                Log.d("index", recipes.get(0).getPicture());
+                // Log.d("index", recipes.get(0).getPicture());
                 Intent intent = new Intent(view.getContext(), RecipeDetailActivity.class);
-                intent.putExtra("recipe", recipes.get(i));
+                intent.putExtra("recipe", recipesl.get(i));
                 startActivity(intent);
             }
         });
@@ -111,7 +109,7 @@ public class Page2 extends Fragment {
 
 
     // Class pour traitement des données
-    public class requestContentTask extends AsyncTask<String, Void, String> {
+    public class requestContentTask extends AsyncTask<String, Void, List<Recipe>> {
 
         List<NameValuePair> nameValuePairs;
         protected Activity activity;
@@ -122,12 +120,13 @@ public class Page2 extends Fragment {
         }
 
         @Override
-        protected String doInBackground(String... url) {
+        protected List<Recipe> doInBackground(String... url) {
 
             HttpClient httpclient = new DefaultHttpClient();
             String result = null;
             HttpPost httppost = new HttpPost(url[0]);
             HttpResponse response = null;
+            List<Recipe> recipes = new ArrayList<>();
 
             InputStream instream = null;
             try {
@@ -139,37 +138,47 @@ public class Page2 extends Fragment {
                     instream = entity.getContent();
                     result = convertStreamToString(instream);
                     Log.d("Json", result);
-                }
-            } catch (Exception e) {
-                result = e.getMessage() + " #745"; //code erreur perso pour test
-            }
-            return result;
-        }
 
+                    JSONObject json = new JSONObject(result);
 
-        @Override
-        protected void onPostExecute(String result) {
-            try {
-                JSONObject json = new JSONObject(result);
-                if (!result.contains("#745") && json.getString("success").equalsIgnoreCase("true")) {
-                    // Construction de mon objet Recipe à partir des données Json
-                    final List<Recipe> recipes = new ArrayList<>();
 
                     for (int i = 0; i < json.getJSONArray("recipes").length(); i++) {
                         JSONObject temp = new JSONObject(json.getJSONArray("recipes").get(i).toString());
                         recipes.add(new Recipe(temp));
                     }
 
+
+
+                }
+            } catch (Exception e) {
+                recipes = null; //code erreur perso pour test
+            }
+            return recipes;
+        }
+
+
+        @Override
+        protected void onPostExecute(List<Recipe> recipes) {
+            try {
+               // JSONObject json = new JSONObject(result);
+                if ( recipes != null) {
+                    // Construction de mon objet Recipe à partir des données Json
+
+
                     // todo Persist en base pendant qu'on dispose d'une connection
                     SQLiteHelper db = new SQLiteHelper(getContext());
                     for (Recipe r : recipes) {
                         db.insertOrUpdateRecipe(r, (User) getActivity().getIntent().getSerializableExtra("currentUser"));
                     }
+
+
+
+
                 } else {
                     messageAlert("Erreur", "FDP, \rVeuillez rééssayer.", activity);
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+               Log.d("OUI", e.getMessage());
             } // try / catch obligatoire pour objet JSONObject
 
             // activity.findViewById(R.id.PBLogin).setVisibility(View.GONE);

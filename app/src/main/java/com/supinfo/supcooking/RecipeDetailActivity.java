@@ -1,5 +1,6 @@
 package com.supinfo.supcooking;
 
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
@@ -45,9 +46,8 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
 
         Recipe r = (Recipe) this.getIntent().getSerializableExtra("recipe");
-        Log.d("attr", r.getPicture());
 
-        this.IMGRecipe.setImageBitmap(Util.getBitmapFromURL(r.getPicture()));
+        this.IMGRecipe.setImageBitmap(BitmapFactory.decodeByteArray(r.getPicture(),0, r.getPicture().length));
         this.RBRecipe.setRating(r.getRate());
         this.NameRecipe.setText(r.getName());
         this.TypeRecipe.setText(r.getType());

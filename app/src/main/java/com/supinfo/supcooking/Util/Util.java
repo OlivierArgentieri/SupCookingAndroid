@@ -7,9 +7,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -80,6 +83,7 @@ public abstract class Util {
         return sb.toString();
     }
     public static Bitmap getBitmapFromURL(String src) {
+
         try {
             URL url = new URL(src);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -93,4 +97,23 @@ public abstract class Util {
             return null;
         }
     }
+    public static byte[] getByteFromURL(final String url) {
+        try {
+            URL url1 = new URL(url);
+            HttpURLConnection connection = (HttpURLConnection) url1.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            myBitmap.compress(Bitmap.CompressFormat.JPEG, 50, stream);
+            Log.d("ERREUR DE LA BITMAP", String.valueOf(stream.toByteArray().length));
+            return stream.toByteArray();
+        } catch (IOException e) {
+            // Log exception
+            Log.d("ERREUR DE LA BITMAP", e.getMessage());
+            return null;
+        }
+    }
+
 }

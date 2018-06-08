@@ -15,6 +15,7 @@ import android.widget.ProgressBar;
 
 import com.supinfo.supcooking.Entity.User;
 import com.supinfo.supcooking.Persist.SQLiteHelper;
+import com.supinfo.supcooking.Util.Util;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -80,24 +81,24 @@ public class MainActivity extends AppCompatActivity {
                 // user en local
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setMessage("Aucune connection internet trouvé, \rl'application va essayé de vous identifier en local.").setTitle("Information");
-
+                final User u = db.getUserLogin(ETUsername.getText().toString(), ETPassword.getText().toString());
                 builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
                         // Todo insérer test local cnx user
-                        User u = db.getUserLogin(ETUsername.getText().toString(), ETPassword.getText().toString());
                         if (u != null){
                             Intent intent = new Intent(MainActivity.super.getBaseContext(), RecipesActivity.class);
                             intent.putExtra("currentUser", u);
                             startActivity(intent);
                         }
-                        else{
-                            messageAlert("Erreur","Utilisateur introuvable, \rVeuillez rééssayer.", getParent().getParent());
-                        }
                     }
                 });
+
                 AlertDialog dialog = builder.create();
                 dialog.show();
+                if (u ==null){
+                    messageAlert("Erreur","Utilisateur introuvable, \rVeuillez rééssayer.", this);
+                }
             }
         }
     }
