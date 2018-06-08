@@ -22,7 +22,7 @@ public class RegisterActivity extends AppCompatActivity {
     SQLiteHelper db;
     EditText ETemail;
     EditText ETpassword;
-    EditText ETpseudo;
+    EditText ETusername;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,13 +32,12 @@ public class RegisterActivity extends AppCompatActivity {
         db.getAllUser();
         this.ETemail = findViewById(R.id.ETRegisterEmail);
         this.ETpassword = findViewById(R.id.ETRegisterPassword);
-        this.ETpseudo = findViewById(R.id.ETRegisterUsername);
+        this.ETusername = findViewById(R.id.ETRegisterUsername);
     }
 
     public void onClickRegister(View v){
-        User u = new User(ETemail.getText().toString().trim(), ETpassword.getText().toString().trim(), ETpseudo.getText().toString().trim());
 
-        if(ETemail.getText().toString().trim().isEmpty() || ETpassword.getText().toString().trim().isEmpty() || ETpseudo.getText().toString().trim().isEmpty()){
+        if(ETemail.getText().toString().trim().isEmpty() || ETpassword.getText().toString().trim().isEmpty() || ETusername.getText().toString().trim().isEmpty()){
             messageAlert("Erreur","Tout les champs sont obligatoire, \tmerci de rééssayer.", this);
         }
 
@@ -46,12 +45,12 @@ public class RegisterActivity extends AppCompatActivity {
             messageAlert("Erreur","Votre addresses email ne respecte pas la bonne syntax, \tmerci de rééssayer.", this );
         }
 
-        else if(db.getUser(u) != null){
+        else if(db.getUser(ETemail.getText().toString().trim(),ETusername.getText().toString().trim()) != null){
            messageAlert("Erreur","Utilisateur déja éxistant ! \nEssayez de vous connecter.", this);
         }
 
         else{
-            db.insertUser(u.getPassword(), u.getEmail(), u.getUsername());
+            db.insertUser(ETemail.getText().toString().trim(), ETpassword.getText().toString().trim(), ETusername.getText().toString().trim());
             messageAlert("Information","Utilisateur bien enregistré ! \nEssayez de vous connecter.", this);
         }
     }

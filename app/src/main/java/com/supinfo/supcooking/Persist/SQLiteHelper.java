@@ -7,8 +7,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.supinfo.supcooking.Adapter.RowRecipe;
 import com.supinfo.supcooking.Entity.Recipe;
 import com.supinfo.supcooking.Entity.User;
+
+import java.util.ArrayList;
 
 /**
  * Created by User on 20/03/2018.
@@ -105,6 +108,28 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         if(result == -1) { return false; }
         else {return true; }
     }
+
+    public boolean InsertOrUpdateUser(User u){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_USERNAME, u.getUsername());
+        contentValues.put(COLUMN_PASSWORD, u.getPassword());
+        contentValues.put(COLUMN_PHONENUMBER, u.getPhoneNumber());
+        contentValues.put(COLUMN_FIRSTNAME, u.getFirstname());
+        contentValues.put(COLUMN_LASTNAME, u.getLastname());
+        contentValues.put(COLUMN_POSTALADDRESS, u.getPostalAddress());
+        contentValues.put(COLUMN_EMAIL, u.getEmail());
+
+        User user = getUser(u);
+        if (user != null){
+            db.update(TABLE_USER, contentValues, COLUMN_USERNAME+"=? AND " + COLUMN_EMAIL+"=?", new String[] {u.getUsername(), u.getEmail()});
+            return false;
+        }
+        else{
+        db.insertWithOnConflict(TABLE_USER, null, contentValues, SQLiteDatabase.CONFLICT_IGNORE);
+        return true;}
+    }
+
     public void getAllUser(){
         Log.d("BDD", "Infos de la BDD");
         SQLiteDatabase db = this.getWritableDatabase();
@@ -127,21 +152,60 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 
         if (result.getCount() > 0){
             result.moveToNext();
-            User u = new User( result.getString(7), result.getString(2), result.getString(1));
-            db.close();
+            User u = new User(result.getInt(0), result.getString(7), result.getString(2), result.getString(1));
             return u;
         }
-        db.close();
-
         return null;
-
     }
 
+    public User getUser(String email, String username){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String[] params = new String[]{  email, username};
+        String sql = "select * from " + TABLE_USER + " WHERE email LIKE ?  OR username LIKE ?";
+        Cursor result = db.rawQuery( sql , params);
+
+        if (result.getCount() > 0){
+            result.moveToNext();
+            User u = new User(result.getInt(0), result.getString(7), result.getString(2), result.getString(1));
+            return u;
+        }
+        return null;
+    }
+
+    public User getUserLogin(String username, String password){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String[] params = new String[]{ username, password};
+        String sql = "select * from " + TABLE_USER + " WHERE username LIKE ?  OR password LIKE ?";
+        Cursor result = db.rawQuery( sql , params);
+
+        if (result.getCount() > 0){
+            result.moveToNext();
+            User u = new User(result.getInt(0), result.getString(7), result.getString(2), result.getString(1));
+            return u;
+        }
+        return null;
+    }
+
+    public User getUserById(Integer id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String[] params = new String[]{ id.toString()};
+        String sql = "select * from " + TABLE_USER + " WHERE _idUser LIKE ? ";
+        Cursor result = db.rawQuery( sql , params);
+
+        if (result.getCount() > 0){
+            result.moveToNext();
+            User u = new User(result.getInt(0), result.getString(7), result.getString(2), result.getString(1));
+            return u;
+        }
+        return null;
+    }
+
+
     // Method Recipe
-    public boolean insertRecipe(Recipe recipe){
+    public boolean insertOrUpdateRecipe(Recipe recipe, User user){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-
+        contentValues.put(COLUMN_ID_RECIPE, recipe.getId());
         contentValues.put(COLUMN_NAME, recipe.getName());
         contentValues.put(COLUMN_TYPE, recipe.getType());
         contentValues.put(COLUMN_COOKINGTIME, recipe.getCookingTime());
@@ -150,9 +214,29 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         contentValues.put(COLUMN_PREPARATIONSTEPS, recipe.getPreparationSteps());
         contentValues.put(COLUMN_RATE, recipe.getRate());
         contentValues.put(COLUMN_PICTURE, recipe.getPicture());
-        long result = db.insert(TABLE_USER, null, contentValues);
-        if(result == -1) { return false; }
-        else {return true; }
+        contentValues.put(COLUMN_USER, getUser(user).getId());
+
+        int id = (int) db.insertWithOnConflict(TABLE_RECIPE, null, contentValues, SQLiteDatabase.CONFLICT_IGNORE);
+        if (id == -1){
+            db.update(TABLE_RECIPE, contentValues, COLUMN_ID_RECIPE+"=?", new String[] {String.valueOf(recipe.getId())});
+            return false;
+        }
+        else
+        {return true; }
+    }
+
+    public ArrayList<Recipe> getAllRecipe(){
+        Log.d("BDD", "Infos de la BDD recipe");
+        ArrayList<Recipe> Recipes = new ArrayList<Recipe>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor result = db.rawQuery("select * from " + TABLE_RECIPE, null);
+        if (result.getCount() > 0){
+            // todo faire la liste des recettes
+            while(result.moveToNext()) {
+                Recipes.add(new Recipe(result.getInt(0), result.getString(1), result.getString(2), result.getInt(3), result.getInt(4), result.getString(5), result.getString(6), result.getFloat(7),  result.getString(8)));
+            }
+        }
+        return Recipes;
     }
 
 }

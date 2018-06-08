@@ -40,7 +40,10 @@
             android:id="@+id/TVRecipeDetailName"
             android:text="Name"
             android:layout_below="@id/RBDetailRecipe"
-            android:layout_centerHorizontal="true"/>
+            android:layout_centerHorizontal="true"
+            android:textSize="20sp"
+            android:textColor="@color/colorTitle"
+            />
 
 
         <TextView
@@ -48,7 +51,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/TVRecipeDetailCookingTimeLabel"
             android:text="@string/text_view_recipe_detail_type_label"
-            android:layout_below="@id/TVRecipeDetailName"/>
+            android:layout_below="@id/TVRecipeDetailName"
+            android:textColor="@color/colorTitle"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -64,7 +68,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/TVRecipeDetailTypeLabel"
             android:text="@string/text_view_recipe_detail_cooking_time_label"
-            android:layout_below="@id/TVRecipeDetailCookingTimeLabel"/>
+            android:layout_below="@id/TVRecipeDetailCookingTimeLabel"
+            android:textColor="@color/colorTitle"/>
 
 
         <TextView
@@ -85,6 +90,7 @@
             android:id="@+id/TVRecipeDetailPreparationTimeLabel"
             android:text="@string/text_view_recipe_detail_preparation_time_label"
             android:layout_below="@+id/TVRecipeDetailCookingTime"
+            android:textColor="@color/colorTitle"
             />
 
         <TextView
@@ -104,6 +110,7 @@
             android:id="@+id/TVRecipeDetailIngredientsLabel"
             android:text="Ingrédients :"
             android:layout_below="@+id/TVRecipeDetailPreparationTime"
+            android:textColor="@color/colorTitle"
             />
 
         <TextView
@@ -123,15 +130,17 @@
             android:id="@+id/TVRecipeDetailPreparationStepsLabel"
             android:text="@string/text_view_detail_preparation_steps_label"
             android:layout_below="@+id/TVRecipeDetailIngredients"
+            android:textColor="@color/colorTitle"
             />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/TVRecipeDetailPreparationSteps"
-            android:text="Etape de pratation"
+            android:text="Etape de preparation"
             android:layout_below="@+id/TVRecipeDetailPreparationStepsLabel"
-            />
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp" />
 
     </RelativeLayout>
 </ScrollView>

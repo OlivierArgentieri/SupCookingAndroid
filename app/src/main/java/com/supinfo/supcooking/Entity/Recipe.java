@@ -90,33 +90,33 @@ public class Recipe implements Serializable {
     }
 
     public Recipe(int id, String name, String type, Integer cookingTime, Integer preparationTime, String ingredients, String preparationSteps, Float rate, String picture) {
-        this.id = id;
-        this.name = name;
-        this.type = type;
-        this.cookingTime = cookingTime;
-        this.preparationTime = preparationTime;
-        this.ingredients = ingredients;
-        this.preparationSteps = preparationSteps;
-        this.rate = rate;
-        this.picture = picture;
+        this.setId(id);
+        this.setName(name);
+        this.setType(type);
+        this.setCookingTime(cookingTime);
+        this.setPreparationTime(preparationTime);
+        this.setIngredients(ingredients);
+        this.setPreparationSteps(preparationSteps);
+        this.setRate(rate);
+        this.setPicture(picture);
     }
 
 
     public Recipe(JSONObject json){
         try{
-            this.id = Integer.parseInt(json.get("id").toString());
-            this.name = json.get("name").toString();
-            this.type = json.get("type").toString();
-            this.cookingTime = Integer.parseInt(json.get("cookingTime").toString());
-            this.preparationTime = Integer.parseInt(json.get("preparationtTime").toString());
-            this.ingredients = json.get("ingredients").toString();
-            this.preparationSteps = json.get("preparationSteps").toString();
-            this.rate = Float.parseFloat(json.get("rate").toString());
+            this.setId(Integer.parseInt(json.get("id").toString()));
+            this.setName(json.get("name").toString());
+            this.setType(json.get("type").toString());
+            this.setCookingTime(Integer.parseInt(json.get("cookingTime").toString()));
+            this.setPreparationTime(Integer.parseInt(json.get("preparationtTime").toString()));
+            this.setIngredients(json.get("ingredients").toString());
+            this.setPreparationSteps(json.get("preparationSteps").toString());
+            this.setRate(Float.parseFloat(json.get("rate").toString()));
             if (json.get("picture").toString().equalsIgnoreCase("null"))
             {
-                this.picture = "https://media.discordapp.net/attachments/215765926392496128/452898581758738462/DSC_0172.jpg";
+                this.setPicture("https://media.discordapp.net/attachments/215765926392496128/452898581758738462/DSC_0172.jpg");
             }else {
-                this.picture = json.get("picture").toString();
+                this.setPicture(json.get("picture").toString());
             }
         }
         catch (Exception ignore){}

@@ -12,6 +12,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.supinfo.supcooking.Entity.Recipe;
+import com.supinfo.supcooking.Persist.SQLiteHelper;
 import com.supinfo.supcooking.Util.Util;
 
 
@@ -54,6 +55,10 @@ public class RecipeDetailActivity extends AppCompatActivity {
         this.PreparationTime.setText(String.valueOf(r.getPreparationTime()));
         this.Ingredients.setText(r.getIngredients());
         this.PreparationsSteps.setText(r.getPreparationSteps());
+
+        // Test BDD Recipe
+        SQLiteHelper db = new SQLiteHelper(this);
+        db.getAllRecipe();
 
     }
 }

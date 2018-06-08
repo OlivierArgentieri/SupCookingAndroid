@@ -49,8 +49,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        db = new SQLiteHelper(this);
-        db.getAllUser();
+        this.db = new SQLiteHelper(this);
         this.ETUsername = findViewById(R.id.ETLoginUsername);
         this.ETPassword = findViewById(R.id.ETLoginPassword);
         this.PBLogin = findViewById(R.id.PBLogin);
@@ -85,10 +84,16 @@ public class MainActivity extends AppCompatActivity {
                 builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
-
                         // Todo insérer test local cnx user
-                        Intent intent = new Intent(MainActivity.super.getBaseContext(), RecipesActivity.class);
-                        startActivity(intent);
+                        User u = db.getUserLogin(ETUsername.getText().toString(), ETPassword.getText().toString());
+                        if (u != null){
+                            Intent intent = new Intent(MainActivity.super.getBaseContext(), RecipesActivity.class);
+                            intent.putExtra("currentUser", u);
+                            startActivity(intent);
+                        }
+                        else{
+                            messageAlert("Erreur","Utilisateur introuvable, \rVeuillez rééssayer.", getParent().getParent());
+                        }
                     }
                 });
                 AlertDialog dialog = builder.create();
@@ -124,7 +129,6 @@ public class MainActivity extends AppCompatActivity {
 
             InputStream instream = null;
             try {
-
                 httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
                 response = httpclient.execute(httppost);
 
@@ -140,7 +144,6 @@ public class MainActivity extends AppCompatActivity {
             return result;
         }
 
-
         @Override
         protected void onPostExecute(String result) {
             try {
@@ -148,10 +151,11 @@ public class MainActivity extends AppCompatActivity {
                 if (!result.contains("#745") && json.getString("success").equalsIgnoreCase("true")) {
                     // Construction de mon objet User à partir des données Json
                     User u = new User(json);
-
+                    db.InsertOrUpdateUser(u);
                     Intent intent = new Intent(activity.getBaseContext(), RecipesActivity.class);
                     intent.putExtra("currentUser", u);
 
+                    db.getAllUser();
                     activity.startActivity(intent);
                 }
                 else {

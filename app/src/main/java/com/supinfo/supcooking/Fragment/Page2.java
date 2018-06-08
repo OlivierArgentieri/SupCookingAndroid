@@ -18,6 +18,7 @@ import com.supinfo.supcooking.Adapter.RowRecipe;
 import com.supinfo.supcooking.Adapter.RowRecipeAdapter;
 import com.supinfo.supcooking.Entity.Recipe;
 import com.supinfo.supcooking.Entity.User;
+import com.supinfo.supcooking.Persist.SQLiteHelper;
 import com.supinfo.supcooking.R;
 import com.supinfo.supcooking.RecipeDetailActivity;
 import com.supinfo.supcooking.RecipesActivity;
@@ -41,7 +42,7 @@ import static com.supinfo.supcooking.Util.Util.convertStreamToString;
 import static com.supinfo.supcooking.Util.Util.isNetworkAvailable;
 import static com.supinfo.supcooking.Util.Util.messageAlert;
 
-public class Page2 extends Fragment{
+public class Page2 extends Fragment {
     protected View view;
 
     // list recette
@@ -69,7 +70,8 @@ public class Page2 extends Fragment{
 
         // construire la vue
         User u = (User) getActivity().getIntent().getSerializableExtra("currentUser");
-
+        Log.d("doinbacktamer", u.getPassword());
+        Log.d("doinbacktamer", u.getUsername());
         if (isNetworkAvailable(this.getActivity())) {
             List<NameValuePair> nameValuePairs = new ArrayList<>(3);
             nameValuePairs.add(new BasicNameValuePair("action", "getCooking"));
@@ -79,32 +81,49 @@ public class Page2 extends Fragment{
             requestContentTask task = new requestContentTask(this.getActivity(), nameValuePairs);
             task.execute("http://supinfo.steve-colinet.fr/supcooking/");
         }
-        else{
-            // lire les donners de la bdd du telehpone
 
+        // lire les donners de la bdd du telehpone
+        SQLiteHelper db = new SQLiteHelper(getContext());
+        ArrayList<RowRecipe> rowRecipes = new ArrayList<RowRecipe>();
+        final ArrayList<Recipe> recipes = db.getAllRecipe();
+
+        for (Recipe r : recipes) {
+            db.insertOrUpdateRecipe(r, (User) getActivity().getIntent().getSerializableExtra("currentUser"));
+
+            // Ajout de la ligne pour la liste des recettes
+            rowRecipes.add(new RowRecipe(r.getPicture(), r.getName(), r.getType(), r.getRate()));
         }
+        setAdapter(new RowRecipeAdapter(getContext(), rowRecipes));
+        listRecipe.setAdapter(adapter);
+
+        listRecipe.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                // todo lancer la description de la recettes
+                Log.d("index", recipes.get(0).getPicture());
+                Intent intent = new Intent(view.getContext(), RecipeDetailActivity.class);
+                intent.putExtra("recipe", recipes.get(i));
+                startActivity(intent);
+            }
+        });
         return this.view;
     }
 
 
-
     // Class pour traitement des données
-
     public class requestContentTask extends AsyncTask<String, Void, String> {
 
         List<NameValuePair> nameValuePairs;
         protected Activity activity;
 
         public requestContentTask(Activity activity, List<NameValuePair> nameValuePairs) {
-
             this.nameValuePairs = nameValuePairs;
-
             this.activity = activity;
         }
 
         @Override
         protected String doInBackground(String... url) {
-            Log.d("doinbacktamer", "OUI");
+
             HttpClient httpclient = new DefaultHttpClient();
             String result = null;
             HttpPost httppost = new HttpPost(url[0]);
@@ -136,46 +155,24 @@ public class Page2 extends Fragment{
                     // Construction de mon objet Recipe à partir des données Json
                     final List<Recipe> recipes = new ArrayList<>();
 
-                   for (int i =0 ; i<json.getJSONArray("recipes").length(); i++){
-                      JSONObject temp = new JSONObject(json.getJSONArray("recipes").get(i).toString());
-                      recipes.add(new Recipe(temp));
-                   }
-                   // todo faire la liste des recettes
-                    ArrayList<RowRecipe> rowRecipes = new ArrayList<RowRecipe>();
-
-                    for (Recipe r : recipes){
-                        if (r.getPicture().equalsIgnoreCase("null")){
-                            rowRecipes.add(new RowRecipe("https://media.discordapp.net/attachments/215765926392496128/452898581758738462/DSC_0172.jpg", r.getName(), r.getType(), r.getRate()));
-                        }else{
-                            rowRecipes.add(new RowRecipe(r.getPicture(), r.getName(), r.getType(), r.getRate()));
-                        }
-
+                    for (int i = 0; i < json.getJSONArray("recipes").length(); i++) {
+                        JSONObject temp = new JSONObject(json.getJSONArray("recipes").get(i).toString());
+                        recipes.add(new Recipe(temp));
                     }
-                    setAdapter(new RowRecipeAdapter(getContext(), rowRecipes));
-                    listRecipe.setAdapter(adapter);
 
-                    listRecipe.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-                        @Override
-                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l){
-                            // todo lancer la description de la recettes
-                            Log.d("index",  recipes.get(0).getPicture());
-                            Intent intent = new Intent(view.getContext(), RecipeDetailActivity.class);
-                            intent.putExtra("recipe", recipes.get(i));
-                            startActivity(intent);
-
-                        }
-                    });
-
-
-                }
-                else {
-                    messageAlert("Erreur","Utilisateur introuvable, \rVeuillez rééssayer.", activity);
+                    // todo Persist en base pendant qu'on dispose d'une connection
+                    SQLiteHelper db = new SQLiteHelper(getContext());
+                    for (Recipe r : recipes) {
+                        db.insertOrUpdateRecipe(r, (User) getActivity().getIntent().getSerializableExtra("currentUser"));
+                    }
+                } else {
+                    messageAlert("Erreur", "FDP, \rVeuillez rééssayer.", activity);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             } // try / catch obligatoire pour objet JSONObject
 
-           // activity.findViewById(R.id.PBLogin).setVisibility(View.GONE);
+            // activity.findViewById(R.id.PBLogin).setVisibility(View.GONE);
         }
     }
 

@@ -14,6 +14,9 @@ import java.util.List;
 
 public class User implements Serializable {
 
+    private int id;
+
+
     private String username;
     private String password;
     private String phoneNumber;
@@ -22,6 +25,15 @@ public class User implements Serializable {
     private String postalAddress;
     private String email;
     private List<Recipe> recipes;
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public List<Recipe> getRecipes() {
         return recipes;
@@ -91,15 +103,15 @@ public class User implements Serializable {
 
     public User() {}
 
-
-    public User(String email, String password, String username) {
+    public User(Integer id, String email, String password, String username) {
+        this.setId(id);
         this.setEmail(email);
         this.setPassword(password);
         this.setUsername(username);
         this.setRecipes(new ArrayList<Recipe>());
     }
 
-    public User(String username, String password,  String phoneNumber, String firstname, String lastname, String postalCode,  String email){
+    public User(String username, String password,  String phoneNumber, String firstname, String lastname, String postalCode,  String email, int id){
         this.setUsername(username);
         this.setPassword(password);
         this.setPhoneNumber(phoneNumber);
@@ -107,6 +119,7 @@ public class User implements Serializable {
         this.setLastname(lastname);
         this.setPostalAddress(postalCode);
         this.setEmail(email);
+        this.setId(id);
         this.setRecipes(new ArrayList<Recipe>());
     }
     public User(JSONObject json){
