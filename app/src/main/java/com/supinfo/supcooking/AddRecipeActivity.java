@@ -30,7 +30,6 @@ public class AddRecipeActivity extends AppCompatActivity {
     public void onClickNewRecipeTakePicture(View view) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent, 0);
-
     }
 
     @Override
