@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.supinfo.supcooking.Adapter.RowRecipe;
 import com.supinfo.supcooking.Adapter.RowRecipeAdapter;
@@ -55,6 +56,9 @@ public class Page2 extends Fragment {
     // adapter pour chaque item de la listView
     protected static RowRecipeAdapter adapter;
 
+    // Rond de chargerment
+    protected ProgressBar PBGetAllRecipe;
+
     public static void setAdapter(RowRecipeAdapter adapter) {
         Page2.adapter = adapter;
     }
@@ -69,6 +73,10 @@ public class Page2 extends Fragment {
         // Ligne de cahque recette
         imgRecette = this.view.findViewById(R.id.IMGVRowRecipe);
 
+        // Rond de chargement
+        this.PBGetAllRecipe = this.view.findViewById(R.id.PBGetAllRecipe);
+        this.PBGetAllRecipe.setVisibility(View.VISIBLE);
+
         // construire la vue
         User u = (User) getActivity().getIntent().getSerializableExtra("currentUser");
         if (isNetworkAvailable(this.getActivity())) {
@@ -80,30 +88,34 @@ public class Page2 extends Fragment {
             requestContentTask task = new requestContentTask(this.getActivity(), nameValuePairs);
             task.execute("http://supinfo.steve-colinet.fr/supcooking/");
         }
+        else {
 
-        // todo lire les données de la bdd du telehpone
-        SQLiteHelper db = new SQLiteHelper(getContext());
-        ArrayList<RowRecipe> rowRecipes = new ArrayList<RowRecipe>();
-        ArrayList<Recipe> recipes = db.getAllRecipe();
+            // todo lire les données de la bdd du telehpone
+            SQLiteHelper db = new SQLiteHelper(getContext());
+            ArrayList<RowRecipe> rowRecipes = new ArrayList<RowRecipe>();
+            ArrayList<Recipe> recipes = db.getAllRecipe();
 
-        for (Recipe r : recipes) {
-            rowRecipes.add(new RowRecipe(r.getPicture(), r.getName(), r.getType(), r.getRate()));
+            for (Recipe r : recipes) {
+                rowRecipes.add(new RowRecipe(r.getPicture(), r.getName(), r.getType(), r.getRate()));
+            }
+
+            setAdapter(new RowRecipeAdapter(getContext(), rowRecipes));
+            listRecipe.setAdapter(adapter);
+
+            final List<Recipe> recipesl = recipes;
+            listRecipe.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    // todo lancer la description de la recettes
+                    // Log.d("index", recipes.get(0).getPicture());
+                    Intent intent = new Intent(view.getContext(), RecipeDetailActivity.class);
+                    intent.putExtra("recipe", recipesl.get(i));
+                    startActivity(intent);
+                }
+            });
+            this.PBGetAllRecipe.setVisibility(View.GONE);
         }
 
-        setAdapter(new RowRecipeAdapter(getContext(), rowRecipes));
-        listRecipe.setAdapter(adapter);
-
-        final List<Recipe> recipesl = recipes;
-        listRecipe.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                // todo lancer la description de la recettes
-                // Log.d("index", recipes.get(0).getPicture());
-                Intent intent = new Intent(view.getContext(), RecipeDetailActivity.class);
-                intent.putExtra("recipe", recipesl.get(i));
-                startActivity(intent);
-            }
-        });
         return this.view;
     }
 
@@ -146,9 +158,6 @@ public class Page2 extends Fragment {
                         JSONObject temp = new JSONObject(json.getJSONArray("recipes").get(i).toString());
                         recipes.add(new Recipe(temp));
                     }
-
-
-
                 }
             } catch (Exception e) {
                 recipes = null; //code erreur perso pour test
@@ -162,21 +171,39 @@ public class Page2 extends Fragment {
             try {
                // JSONObject json = new JSONObject(result);
                 if ( recipes != null) {
-                    // Construction de mon objet Recipe à partir des données Json
-
+                    PBGetAllRecipe.setVisibility(View.VISIBLE);
 
                     // todo Persist en base pendant qu'on dispose d'une connection
+                    ArrayList<RowRecipe> rowRecipes = new ArrayList<RowRecipe>();
                     SQLiteHelper db = new SQLiteHelper(getContext());
                     for (Recipe r : recipes) {
                         db.insertOrUpdateRecipe(r, (User) getActivity().getIntent().getSerializableExtra("currentUser"));
+
                     }
 
+                    // récupérer toutes les recettes en base de données
+                    for (Recipe r : db.getAllRecipe()){
+                        rowRecipes.add(new RowRecipe(r.getPicture(), r.getName(), r.getType(), r.getRate()));
+                    }
+                    setAdapter(new RowRecipeAdapter(getContext(), rowRecipes));
+                    listRecipe.setAdapter(adapter);
 
-
+                    final List<Recipe> recipesl = recipes;
+                    listRecipe.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            // todo lancer la description de la recettes
+                            // Log.d("index", recipes.get(0).getPicture());
+                            Intent intent = new Intent(view.getContext(), RecipeDetailActivity.class);
+                            intent.putExtra("recipe", recipesl.get(i));
+                            startActivity(intent);
+                        }
+                    });
 
                 } else {
                     messageAlert("Erreur", "FDP, \rVeuillez rééssayer.", activity);
                 }
+                PBGetAllRecipe.setVisibility(View.GONE);
             } catch (Exception e) {
                Log.d("OUI", e.getMessage());
             } // try / catch obligatoire pour objet JSONObject

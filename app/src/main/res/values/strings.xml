@@ -10,7 +10,7 @@
     <string name="text_view_username_activity_login">Username :</string>
     <string name="text_view_pseudo_activity_register">Username :</string>
     <string name="image_view_description_row_recipe">RecipeImage</string>
-    <string name="text_view_title_list_recipe_online">Recette(s) en ligne :</string>
+    <string name="text_view_title_list_recipe_online">Recettes disponible :</string>
     <string name="text_view_recipe_detail_type_label">Sujet : </string>
     <string name="text_view_recipe_detail_cooking_time_label">Temps de cuisson : </string>
     <string name="text_view_recipe_detail_preparation_time_label">Temp de préparation :</string>

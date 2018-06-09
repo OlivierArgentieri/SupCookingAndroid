@@ -6,6 +6,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 
 import com.supinfo.supcooking.Adapter.PagerAdapter;
+import com.supinfo.supcooking.Util.Util;
 
 
 public class RecipesActivity extends FragmentActivity{
@@ -19,5 +20,10 @@ public class RecipesActivity extends FragmentActivity{
         PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(1); // Afficher le deuxiéme fragment au demarrage de l'appli
+    }
+
+    public void onClickCreateRecipe(View view) {
+       //todo add recipe
+
     }
 }

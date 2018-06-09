@@ -154,7 +154,8 @@ public class MainActivity extends AppCompatActivity {
                     User u = new User(json);
                     db.InsertOrUpdateUser(u);
                     Intent intent = new Intent(activity.getBaseContext(), RecipesActivity.class);
-                    intent.putExtra("currentUser", u);
+
+                    intent.putExtra("currentUser",  db.getUser(u));
 
                     db.getAllUser();
                     activity.startActivity(intent);

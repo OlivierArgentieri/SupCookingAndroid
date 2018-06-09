@@ -31,7 +31,7 @@ public class PagerAdapter extends FragmentPagerAdapter{
             case 1:
                 return new Page2();
             case 2:
-                return new Page1();
+                return new Page3();
           default:
              return null;
         }

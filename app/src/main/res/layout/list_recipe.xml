@@ -27,4 +27,12 @@
         android:divider="#FFFFFF"
         />
 
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:id="@+id/PBGetAllRecipe"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/LVListRecipe"/>
+
 </RelativeLayout>

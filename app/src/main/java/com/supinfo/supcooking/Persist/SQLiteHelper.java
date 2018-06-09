@@ -201,7 +201,6 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         return null;
     }
 
-
     // Method Recipe
     public boolean insertOrUpdateRecipe(Recipe recipe, User user){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -242,6 +241,21 @@ public class SQLiteHelper extends SQLiteOpenHelper{
                 Log.d("recipe", result.getString(4));
                 Log.d("recipe", result.getString(5));
                 Log.d("recipe", String.valueOf(result.getBlob(8).length));
+            }
+        }
+        return Recipes;
+    }
+    public ArrayList<Recipe> getRecipeByUser(User user){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String[] params = new String[]{  String.valueOf(user.getId())};
+        String sql = "select * from " + TABLE_RECIPE + " WHERE user LIKE ?";
+        Cursor result = db.rawQuery(sql, params);
+
+        ArrayList<Recipe> Recipes = new ArrayList<Recipe>();
+        if (result.getCount() > 0){
+            // todo faire la liste des recettes
+            while(result.moveToNext()) {
+                Recipes.add(new Recipe(result.getInt(0), result.getString(1), result.getString(2), result.getInt(3), result.getInt(4), result.getString(5), result.getString(6), result.getFloat(7),  result.getBlob(8)));
             }
         }
         return Recipes;
