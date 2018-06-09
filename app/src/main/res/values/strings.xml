@@ -16,4 +16,7 @@
     <string name="text_view_recipe_detail_preparation_time_label">Temp de préparation :</string>
     <string name="text_view_detail_recipe_ingredients_label">Temp de préaparation</string>
     <string name="text_view_detail_preparation_steps_label">Etape de préparation :</string>
+    <string name="image_view_description_new_recipe">Image temporaire pour ajout recette</string>
+    <string name="text_button_new_recipe_take_picture">Prendre une photo</string>
+    <string name="text_view_new_recipe_title_name">Titre de la recette :</string>
 </resources>

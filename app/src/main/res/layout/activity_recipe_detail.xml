@@ -49,7 +49,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/TVRecipeDetailCookingTimeLabel"
+            android:id="@+id/TVRecipeDetailTypeLabel"
             android:text="@string/text_view_recipe_detail_type_label"
             android:layout_below="@id/TVRecipeDetailName"
             android:textColor="@color/colorTitle"/>
@@ -59,16 +59,16 @@
             android:layout_height="wrap_content"
             android:id="@+id/TVRecipeDetailType"
             android:text="Type"
-            android:layout_toRightOf="@id/TVRecipeDetailCookingTimeLabel"
-            android:layout_alignBaseline="@id/TVRecipeDetailCookingTimeLabel"
-            android:layout_toEndOf="@id/TVRecipeDetailCookingTimeLabel" />
+            android:layout_toRightOf="@id/TVRecipeDetailTypeLabel"
+            android:layout_alignBaseline="@id/TVRecipeDetailTypeLabel"
+            android:layout_toEndOf="@id/TVRecipeDetailTypeLabel" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/TVRecipeDetailTypeLabel"
+            android:id="@+id/TVRecipeDetailCookingTimeLabel"
             android:text="@string/text_view_recipe_detail_cooking_time_label"
-            android:layout_below="@id/TVRecipeDetailCookingTimeLabel"
+            android:layout_below="@id/TVRecipeDetailTypeLabel"
             android:textColor="@color/colorTitle"/>
 
 
@@ -77,10 +77,10 @@
             android:layout_height="wrap_content"
             android:id="@+id/TVRecipeDetailCookingTime"
             android:text="Temp de cuisson"
-            android:layout_below="@+id/TVRecipeDetailCookingTimeLabel"
-            android:layout_toRightOf="@+id/TVRecipeDetailTypeLabel"
-            android:layout_alignBaseline="@id/TVRecipeDetailTypeLabel"
-            android:layout_toEndOf="@+id/TVRecipeDetailTypeLabel"
+            android:layout_below="@+id/TVRecipeDetailTypeLabel"
+            android:layout_toRightOf="@+id/TVRecipeDetailCookingTimeLabel"
+            android:layout_alignBaseline="@id/TVRecipeDetailCookingTimeLabel"
+            android:layout_toEndOf="@+id/TVRecipeDetailCookingTimeLabel"
             />
 
 
