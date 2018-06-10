@@ -5,69 +5,112 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".AddRecipeActivity"
     >
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:maxHeight="200dp"
-        android:maxWidth="200dp"
-        android:id="@+id/IMGVNewRecipeTemp"
-        android:layout_alignParentTop="true"
-        android:contentDescription="@string/image_view_description_new_recipe"
-        android:adjustViewBounds="true"
-        android:layout_centerHorizontal="true"
-        />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxHeight="200dp"
+            android:maxWidth="200dp"
+            android:id="@+id/IMGVNewRecipeTemp"
+            android:layout_alignParentTop="true"
+            android:contentDescription="@string/image_view_description_new_recipe"
+            android:adjustViewBounds="true"
+            android:layout_centerHorizontal="true"
+            />
 
-    <Button
-        android:id="@+id/BTNNewRecipeTakePicture"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
-        android:onClick="onClickNewRecipeTakePicture"
-        android:text="@string/text_button_new_recipe_take_picture"
-        android:layout_below="@id/IMGVNewRecipeTemp"/>
+        <Button
+            android:id="@+id/BTNNewRecipeTakePicture"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:onClick="onClickNewRecipeTakePicture"
+            android:text="@string/text_button_new_recipe_take_picture"
+            android:layout_below="@id/IMGVNewRecipeTemp"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/TVNewRecipeTitleName"
-        android:text="@string/text_view_new_recipe_title_name"
-        android:layout_below="@id/BTNNewRecipeTakePicture"
-        android:layout_marginLeft="10dp"
-        android:textColor="@color/colorTitle"
-        />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/TVNewRecipeTitleName"
+            android:text="@string/text_view_new_recipe_title_name"
+            android:layout_below="@id/BTNNewRecipeTakePicture"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/colorTitle"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="50dp"/>
 
-    <EditText
-        android:layout_width="200dp"
-        android:layout_height="50dp"
-        android:layout_alignBaseline="@id/TVNewRecipeTitleName"
-        android:layout_toRightOf="@id/TVNewRecipeTitleName"
-        android:layout_toEndOf="@id/TVNewRecipeTitleName"
-        android:inputType="text" />
+        <EditText
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_alignBaseline="@id/TVNewRecipeTitleName"
+            android:layout_toRightOf="@id/TVNewRecipeTitleName"
+            android:layout_toEndOf="@id/TVNewRecipeTitleName"
+            android:inputType="text" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/TVNewRecipeTitleName"
-        android:text="@string/text_view_new_recipe_title_name"
-        android:layout_below="@id/TVNewRecipeTitleName"
-        android:layout_marginLeft="10dp"
-        android:textColor="@color/colorTitle"
-        />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/TVNewRecipeType"
+            android:text="@string/text_view_new_recipe_type"
+            android:layout_below="@id/TVNewRecipeTitleName"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/colorTitle"
+            android:layout_marginTop="35dp"
+            android:layout_marginStart="10dp" />
 
-    <EditText
-        android:layout_width="200dp"
-        android:layout_height="50dp"
-        android:layout_alignBaseline="@id/TVNewRecipeTitleName"
-        android:layout_toRightOf="@id/TVNewRecipeTitleName"
-        android:layout_toEndOf="@id/TVNewRecipeTitleName"
-        android:inputType="text" />
+        <EditText
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_alignBaseline="@id/TVNewRecipeType"
+            android:layout_toRightOf="@id/TVNewRecipeType"
+            android:layout_toEndOf="@id/TVNewRecipeType"
+            android:inputType="text" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/TVNewRecipeCookingTime"
+            android:text="@string/text_view_new_recipe_cooking_time"
+            android:layout_below="@id/TVNewRecipeType"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/colorTitle"
+            android:layout_marginTop="35dp"
+            android:layout_marginStart="10dp" />
+
+        <EditText
+            android:layout_width="70dp"
+            android:layout_height="50dp"
+            android:layout_alignBaseline="@id/TVNewRecipeCookingTime"
+            android:layout_toRightOf="@id/TVNewRecipeCookingTime"
+            android:layout_toEndOf="@id/TVNewRecipeCookingTime"
+            android:inputType="number"
+            android:maxLength="4"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/TVNewRecipePreparationTime"
+            android:text="@string/text_view_new_recipe_preparation_time"
+            android:layout_below="@id/TVNewRecipeCookingTime"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/colorTitle"
+            android:layout_marginTop="35dp"
+            android:layout_marginStart="10dp" />
+
+        <EditText
+            android:layout_width="70dp"
+            android:layout_height="50dp"
+            android:layout_alignBaseline="@id/TVNewRecipePreparationTime"
+            android:layout_toRightOf="@id/TVNewRecipePreparationTime"
+            android:layout_toEndOf="@id/TVNewRecipePreparationTime"
+            android:inputType="number"
+            android:maxLength="4"/>
 
 
-</RelativeLayout>
+
+    </RelativeLayout>
 
 </ScrollView>

@@ -82,21 +82,6 @@ public abstract class Util {
         }
         return sb.toString();
     }
-    public static Bitmap getBitmapFromURL(String src) {
-
-        try {
-            URL url = new URL(src);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            return myBitmap;
-        } catch (IOException e) {
-            // Log exception
-            return null;
-        }
-    }
     public static byte[] getByteFromURL(final String url) {
         try {
             URL url1 = new URL(url);

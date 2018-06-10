@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,7 +8,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="400dp"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="40dp"
         tools:layout_editor_absoluteY="79dp">
@@ -95,22 +95,25 @@
             android:id="@+id/BTNRegisterRegister"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="50dp"
             android:onClick="onClickRegister"
-            android:text="@string/text_button_Register_activity_register" />
+            android:text="@string/text_button_Register_activity_register"
+            android:layout_alignLeft="@+id/BTNRegisterLogin"
+            android:layout_alignStart="@+id/BTNRegisterLogin"
+            android:layout_below="@+id/ETRegisterPassword"
+            android:layout_marginTop="45dp"
+           />
 
         <Button
             android:id="@+id/BTNRegisterLogin"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="10dp"
+            android:text="@string/text_button_login_activity_login"
             android:onClick="onClickLogin"
-            android:text="@string/text_button_login_activity_login" />
+            android:layout_below="@id/BTNRegisterRegister"
+            />
 
     </RelativeLayout>
 
-</android.support.constraint.ConstraintLayout>
+</ScrollView>

@@ -19,4 +19,7 @@
     <string name="image_view_description_new_recipe">Image temporaire pour ajout recette</string>
     <string name="text_button_new_recipe_take_picture">Prendre une photo</string>
     <string name="text_view_new_recipe_title_name">Titre de la recette :</string>
+    <string name="text_view_new_recipe_type">Type de la recette :</string>
+    <string name="text_view_new_recipe_cooking_time">Temps de cuisson :</string>
+    <string name="text_view_new_recipe_preparation_time">Temps de preparation :</string>
 </resources>
