@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".AddRecipeActivity"
     >
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -34,7 +35,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/TVNewRecipeTitleName"
+            android:id="@+id/TVNewRecipeTitleNameLabel"
             android:text="@string/text_view_new_recipe_title_name"
             android:layout_below="@id/BTNNewRecipeTakePicture"
             android:layout_marginLeft="10dp"
@@ -45,17 +46,18 @@
         <EditText
             android:layout_width="200dp"
             android:layout_height="50dp"
-            android:layout_alignBaseline="@id/TVNewRecipeTitleName"
-            android:layout_toRightOf="@id/TVNewRecipeTitleName"
-            android:layout_toEndOf="@id/TVNewRecipeTitleName"
+            android:id="@+id/ETNewRecipeTitleName"
+            android:layout_alignBaseline="@id/TVNewRecipeTitleNameLabel"
+            android:layout_toRightOf="@id/TVNewRecipeTitleNameLabel"
+            android:layout_toEndOf="@id/TVNewRecipeTitleNameLabel"
             android:inputType="text" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/TVNewRecipeType"
-            android:text="@string/text_view_new_recipe_type"
-            android:layout_below="@id/TVNewRecipeTitleName"
+            android:id="@+id/TVNewRecipeTypeLabel"
+            android:text="@string/text_view_new_recipe_type_label"
+            android:layout_below="@id/TVNewRecipeTitleNameLabel"
             android:layout_marginLeft="10dp"
             android:textColor="@color/colorTitle"
             android:layout_marginTop="35dp"
@@ -64,17 +66,18 @@
         <EditText
             android:layout_width="200dp"
             android:layout_height="50dp"
-            android:layout_alignBaseline="@id/TVNewRecipeType"
-            android:layout_toRightOf="@id/TVNewRecipeType"
-            android:layout_toEndOf="@id/TVNewRecipeType"
+            android:id="@+id/ETNewRecipeType"
+            android:layout_alignBaseline="@id/TVNewRecipeTypeLabel"
+            android:layout_toRightOf="@id/TVNewRecipeTypeLabel"
+            android:layout_toEndOf="@id/TVNewRecipeTypeLabel"
             android:inputType="text" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/TVNewRecipeCookingTime"
-            android:text="@string/text_view_new_recipe_cooking_time"
-            android:layout_below="@id/TVNewRecipeType"
+            android:text="@string/text_view_new_recipe_cooking_time_label"
+            android:layout_below="@id/TVNewRecipeTypeLabel"
             android:layout_marginLeft="10dp"
             android:textColor="@color/colorTitle"
             android:layout_marginTop="35dp"
@@ -83,6 +86,7 @@
         <EditText
             android:layout_width="70dp"
             android:layout_height="50dp"
+            android:id="@+id/ETNewRecipeCookingTime"
             android:layout_alignBaseline="@id/TVNewRecipeCookingTime"
             android:layout_toRightOf="@id/TVNewRecipeCookingTime"
             android:layout_toEndOf="@id/TVNewRecipeCookingTime"
@@ -92,8 +96,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/TVNewRecipePreparationTime"
-            android:text="@string/text_view_new_recipe_preparation_time"
+            android:id="@+id/TVNewRecipePreparationTimeLabel"
+            android:text="@string/text_view_new_recipe_preparation_time_label"
             android:layout_below="@id/TVNewRecipeCookingTime"
             android:layout_marginLeft="10dp"
             android:textColor="@color/colorTitle"
@@ -103,12 +107,63 @@
         <EditText
             android:layout_width="70dp"
             android:layout_height="50dp"
-            android:layout_alignBaseline="@id/TVNewRecipePreparationTime"
-            android:layout_toRightOf="@id/TVNewRecipePreparationTime"
-            android:layout_toEndOf="@id/TVNewRecipePreparationTime"
+            android:id="@+id/ETNewRecipePreparationTime"
+            android:layout_alignBaseline="@id/TVNewRecipePreparationTimeLabel"
+            android:layout_toRightOf="@id/TVNewRecipePreparationTimeLabel"
+            android:layout_toEndOf="@id/TVNewRecipePreparationTimeLabel"
             android:inputType="number"
             android:maxLength="4"/>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/TVNewRecipeIngredientsLabel"
+            android:text="@string/text_view_new_recipe_ingredients_label"
+            android:layout_below="@id/TVNewRecipePreparationTimeLabel"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="35dp"
+            android:textColor="@color/colorTitle"
+            android:layout_marginStart="10dp"/>
+
+        <EditText
+            android:layout_width="200dp"
+            android:layout_height="100dp"
+            android:id="@+id/ETNewRecipeIngredients"
+            android:layout_below="@id/TVNewRecipeIngredientsLabel"
+            android:layout_toRightOf="@id/TVNewRecipeIngredientsLabel"
+            android:layout_toEndOf="@id/TVNewRecipeIngredientsLabel"
+            android:inputType="textMultiLine"
+            android:scrollbars="vertical"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/TVNewRecipePreparationStepsLabel"
+            android:text="@string/text_view_new_recipe_preparation"
+            android:layout_below="@id/ETNewRecipeIngredients"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="35dp"
+            android:textColor="@color/colorTitle"
+            android:layout_marginStart="10dp"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:id="@+id/ETNewRecipePreparationSteps"
+            android:layout_below="@id/TVNewRecipePreparationStepsLabel"
+            android:inputType="textMultiLine"
+            android:scrollbars="vertical"/>
+
+        <Button
+            android:id="@+id/BTNNewRecipeAddRecipe"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
+            android:text="@string/button_new_recipe_add_recipe"
+            android:onClick="onClickNewRecipeAddRecipe"
+            android:layout_below="@id/ETNewRecipePreparationSteps"
+            android:layout_marginTop="25dp"
+            />
 
 
     </RelativeLayout>

@@ -47,7 +47,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
         Recipe r = (Recipe) this.getIntent().getSerializableExtra("recipe");
 
-        this.IMGRecipe.setImageBitmap(BitmapFactory.decodeByteArray(r.getPicture(),0, r.getPicture().length));
+        this.IMGRecipe.setImageBitmap(Util.getBitmapFromPath(r.getPicture()));
         this.RBRecipe.setRating(r.getRate());
         this.NameRecipe.setText(r.getName());
         this.TypeRecipe.setText(r.getType());

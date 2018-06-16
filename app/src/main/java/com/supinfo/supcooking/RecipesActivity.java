@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.supinfo.supcooking.Adapter.PagerAdapter;
+import com.supinfo.supcooking.Entity.User;
 import com.supinfo.supcooking.Util.Util;
 
 
@@ -32,6 +33,8 @@ public class RecipesActivity extends FragmentActivity{
 
     public void onClickCreateRecipe(View view) {
         Intent intent = new Intent(this, AddRecipeActivity.class);
+        User u = (User) getIntent().getSerializableExtra("currentUser");
+        intent.putExtra("currentUser", u);
         startActivity(intent);
     }
 

@@ -8,11 +8,16 @@ import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
+import com.supinfo.supcooking.MainActivity;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -35,7 +40,6 @@ public abstract class Util {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-
     public static boolean isEmailValid(String email)
     {
         String regExpn =
@@ -62,43 +66,67 @@ public abstract class Util {
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
-    public static String convertStreamToString(InputStream is) {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        StringBuilder sb = new StringBuilder();
+    public static String getStreamFromString(InputStream input) {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(input));
+        StringBuilder stringBuilder = new StringBuilder();
 
         String line;
         try {
-            while ((line = reader.readLine()) != null) {
-                sb.append(line).append('\n');
+            while ((line = bufferedReader.readLine()) != null) {
+                stringBuilder.append(line).append('\n');
+                input.close();
             }
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                is.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
-        return sb.toString();
+
+        return stringBuilder.toString();
     }
-    public static byte[] getByteFromURL(final String url) {
+    public static Bitmap getBitmapFromURL(final String url) {
         try {
             URL url1 = new URL(url);
             HttpURLConnection connection = (HttpURLConnection) url1.openConnection();
             connection.setDoInput(true);
             connection.connect();
             InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            myBitmap.compress(Bitmap.CompressFormat.JPEG, 50, stream);
-            Log.d("ERREUR DE LA BITMAP", String.valueOf(stream.toByteArray().length));
-            return stream.toByteArray();
+            return BitmapFactory.decodeStream(input);
+
         } catch (IOException e) {
             // Log exception
             Log.d("ERREUR DE LA BITMAP", e.getMessage());
             return null;
         }
+    }
+    public static Bitmap getBitmapFromPath(String path) {
+        try {
+            return BitmapFactory.decodeFile(path);
+        } catch (Exception e) {
+            Log.d("ERREUR DE LA BITMAP", e.getMessage());
+            return null;
+        }
+    }
+    public static String getPathFromPicture(Bitmap picture, int recipeId){
+        File direct = new File(MainActivity.getAppContext().getFilesDir(), String.valueOf(recipeId));
+
+        if (!direct.exists()) {
+            File wallpaperDirectory = new File(direct.getPath());
+            wallpaperDirectory.mkdirs();
+        }
+
+        File file = new File(new File(direct.getPath()),  String.valueOf(recipeId) + "_IMG");
+        if (file.exists()) {
+            file.delete();
+        }
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            picture.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Log.d("le chemin sa race", file.getAbsolutePath());
+        return file.getAbsolutePath();
     }
 
 }

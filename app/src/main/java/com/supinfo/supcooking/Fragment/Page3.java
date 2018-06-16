@@ -19,6 +19,7 @@ import com.supinfo.supcooking.Entity.User;
 import com.supinfo.supcooking.Persist.SQLiteHelper;
 import com.supinfo.supcooking.R;
 import com.supinfo.supcooking.RecipeDetailActivity;
+import com.supinfo.supcooking.Util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +42,9 @@ public class Page3 extends Fragment{
 
         // Rond de chargerment
         protected ProgressBar PBGetAllRecipe;
+
+        // Current USer
+        protected User u;
 
         public static void setAdapter(RowRecipeAdapter adapter) {
             Page3.adapter = adapter;
@@ -65,7 +69,7 @@ public class Page3 extends Fragment{
             this.PBGetAllRecipe.setVisibility(View.VISIBLE);
 
             // construire la vue
-            User u = (User) getActivity().getIntent().getSerializableExtra("currentUser");
+            u = (User) getActivity().getIntent().getSerializableExtra("currentUser");
 
                 // todo lire les données de la bdd du telehpone
                 SQLiteHelper db = new SQLiteHelper(getContext());
@@ -73,7 +77,7 @@ public class Page3 extends Fragment{
                 ArrayList<Recipe> recipes = db.getRecipeByUser(u);
 
                 for (Recipe r : recipes) {
-                    rowRecipes.add(new RowRecipe(r.getPicture(), r.getName(), r.getType(), r.getRate()));
+                    rowRecipes.add(new RowRecipe(Util.getBitmapFromPath(r.getPicture()), r.getName(), r.getType(), r.getRate()));
                 }
 
                 setAdapter(new RowRecipeAdapter(getContext(), rowRecipes));
@@ -86,12 +90,12 @@ public class Page3 extends Fragment{
                         // todo lancer la description de la recettes
                         // Log.d("index", recipes.get(0).getPicture());
                         Intent intent = new Intent(view.getContext(), RecipeDetailActivity.class);
+
                         intent.putExtra("recipe", recipesl.get(i));
                         startActivity(intent);
                     }
                 });
                 this.PBGetAllRecipe.setVisibility(View.GONE);
-
 
             return this.view;
         }

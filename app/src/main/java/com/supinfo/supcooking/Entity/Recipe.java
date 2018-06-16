@@ -15,7 +15,8 @@ import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import static com.supinfo.supcooking.Util.Util.getByteFromURL;
+import static com.supinfo.supcooking.Util.Util.getBitmapFromURL;
+import static com.supinfo.supcooking.Util.Util.getPathFromPicture;
 
 public class Recipe implements Serializable {
 
@@ -27,7 +28,7 @@ public class Recipe implements Serializable {
     private String ingredients;
     private String preparationSteps;
     private float rate;
-    private byte[] picture;
+    private String picture;
 
     public int getId() {
         return id;
@@ -93,15 +94,15 @@ public class Recipe implements Serializable {
         this.rate = rate;
     }
 
-    public byte[] getPicture() {
+    public String getPicture() {
         return picture;
     }
 
-    public void setPicture(byte[] picture) {
+    public void setPicture(String picture) {
         this.picture = picture;
     }
 
-    public Recipe(int id, String name, String type, int cookingTime, int preparationTime, String ingredients, String preparationSteps, float rate, byte[] picture) {
+    public Recipe(int id, String name, String type, int cookingTime, int preparationTime, String ingredients, String preparationSteps, float rate, String picture) {
         this.setId(id);
         this.setName(name);
         this.setType(type);
@@ -127,10 +128,10 @@ public class Recipe implements Serializable {
             if (json.get("picture").toString().equalsIgnoreCase("null"))
             {
                 // TODO : mettre une vrai image par défaut
-                this.setPicture(getByteFromURL("https://media.discordapp.net/attachments/215765926392496128/452898581758738462/DSC_0172.jpg"));
-                Log.d("SetPictur", "OK");
+                this.setPicture(getPathFromPicture(getBitmapFromURL("https://media.discordapp.net/attachments/215765926392496128/452898581758738462/DSC_0172.jpg"), this.getId()));
+                Log.d("SetPicture", "OK");
             }else {
-                this.setPicture(getByteFromURL(json.get("picture").toString()));
+                this.setPicture(getPathFromPicture(getBitmapFromURL(json.get("picture").toString()), this.getId()));
             }
         }
         catch (Exception e){

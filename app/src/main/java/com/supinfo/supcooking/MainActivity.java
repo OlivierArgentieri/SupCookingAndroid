@@ -2,6 +2,7 @@ package com.supinfo.supcooking;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -28,14 +29,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+
 import org.apache.http.client.HttpClient;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.supinfo.supcooking.Util.Util.convertStreamToString;
+import static com.supinfo.supcooking.Util.Util.getStreamFromString;
 import static com.supinfo.supcooking.Util.Util.isNetworkAvailable;
 import static com.supinfo.supcooking.Util.Util.messageAlert;
 
@@ -46,6 +49,13 @@ public class MainActivity extends AppCompatActivity {
     protected EditText ETPassword;
     protected ProgressBar PBLogin;
 
+    // Pour avoir le context partout dans l`appli
+    private static Context context;
+
+    public static Context getAppContext() {
+        return MainActivity.context;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,11 +65,14 @@ public class MainActivity extends AppCompatActivity {
         this.ETPassword = findViewById(R.id.ETLoginPassword);
         this.PBLogin = findViewById(R.id.PBLogin);
         this.PBLogin.setVisibility(View.INVISIBLE);
+        context = getApplicationContext();
+
     }
 
     public void onClickLogin(View v) {
         if (ETUsername.getText().toString().trim().isEmpty() || ETPassword.getText().toString().trim().isEmpty()) {
             messageAlert("Erreur", "Tout les champs sont obligatoire, \tmerci de rééssayer.", this);
+            db.getAllRecipe();
         } else {
             if (isNetworkAvailable(this)) {
                 // user de l'api (admin/admin)
@@ -68,13 +81,13 @@ public class MainActivity extends AppCompatActivity {
                     List<NameValuePair> nameValuePairs = new ArrayList<>(3);
                     nameValuePairs.add(new BasicNameValuePair("action", "login"));
                     nameValuePairs.add(new BasicNameValuePair("login", ETUsername.getText().toString()));
-                    nameValuePairs.add(new BasicNameValuePair("password",  ETPassword.getText().toString()));
+                    nameValuePairs.add(new BasicNameValuePair("password", ETPassword.getText().toString()));
 
                     // Création de la task
                     requestContentTask task = new requestContentTask(this, nameValuePairs);
                     task.execute("http://supinfo.steve-colinet.fr/supcooking/");
 
-                }catch (Exception e){
+                } catch (Exception e) {
                     Log.d("Error", e.getMessage());
                 }
             } else {
@@ -86,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
                         // Todo insérer test local cnx user
-                        if (u != null){
+                        if (u != null) {
                             Intent intent = new Intent(MainActivity.super.getBaseContext(), RecipesActivity.class);
                             intent.putExtra("currentUser", u);
                             startActivity(intent);
@@ -96,8 +109,8 @@ public class MainActivity extends AppCompatActivity {
 
                 AlertDialog dialog = builder.create();
                 dialog.show();
-                if (u ==null){
-                    messageAlert("Erreur","Utilisateur introuvable, \rVeuillez rééssayer.", this);
+                if (u == null) {
+                    messageAlert("Erreur", "Utilisateur introuvable, \rVeuillez rééssayer.", this);
                 }
             }
         }
@@ -114,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
     public class requestContentTask extends AsyncTask<String, Void, String> {
 
         List<NameValuePair> nameValuePairs;
-        protected Activity activity;
+        private Activity activity;
 
         public requestContentTask(Activity activity, List<NameValuePair> nameValuePairs) {
             this.nameValuePairs = nameValuePairs;
@@ -136,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
                 HttpEntity entity = response.getEntity();
                 if (entity != null) {
                     instream = entity.getContent();
-                    result = convertStreamToString(instream);
+                    result = getStreamFromString(instream);
                     Log.d("Json", result);
                 }
             } catch (Exception e) {
@@ -155,13 +168,12 @@ public class MainActivity extends AppCompatActivity {
                     db.InsertOrUpdateUser(u);
                     Intent intent = new Intent(activity.getBaseContext(), RecipesActivity.class);
 
-                    intent.putExtra("currentUser",  db.getUser(u));
+                    intent.putExtra("currentUser", db.getUser(u));
 
                     db.getAllUser();
                     activity.startActivity(intent);
-                }
-                else {
-                    messageAlert("Erreur","Utilisateur introuvable, \rVeuillez rééssayer.", activity);
+                } else {
+                    messageAlert("Erreur", "Utilisateur introuvable, \rVeuillez rééssayer.", activity);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

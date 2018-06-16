@@ -40,7 +40,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.supinfo.supcooking.Util.Util.convertStreamToString;
+import static com.supinfo.supcooking.Util.Util.getBitmapFromPath;
+import static com.supinfo.supcooking.Util.Util.getStreamFromString;
 import static com.supinfo.supcooking.Util.Util.isNetworkAvailable;
 import static com.supinfo.supcooking.Util.Util.messageAlert;
 
@@ -79,6 +80,7 @@ public class Page2 extends Fragment {
 
         // construire la vue
         User u = (User) getActivity().getIntent().getSerializableExtra("currentUser");
+
         if (isNetworkAvailable(this.getActivity())) {
             List<NameValuePair> nameValuePairs = new ArrayList<>(3);
             nameValuePairs.add(new BasicNameValuePair("action", "getCooking"));
@@ -96,7 +98,7 @@ public class Page2 extends Fragment {
             ArrayList<Recipe> recipes = db.getAllRecipe();
 
             for (Recipe r : recipes) {
-                rowRecipes.add(new RowRecipe(r.getPicture(), r.getName(), r.getType(), r.getRate()));
+                rowRecipes.add(new RowRecipe(getBitmapFromPath(r.getPicture()), r.getName(), r.getType(), r.getRate()));
             }
 
             setAdapter(new RowRecipeAdapter(getContext(), rowRecipes));
@@ -148,7 +150,7 @@ public class Page2 extends Fragment {
                 HttpEntity entity = response.getEntity();
                 if (entity != null) {
                     instream = entity.getContent();
-                    result = convertStreamToString(instream);
+                    result = getStreamFromString(instream);
                     Log.d("Json", result);
 
                     JSONObject json = new JSONObject(result);
@@ -183,7 +185,7 @@ public class Page2 extends Fragment {
 
                     // récupérer toutes les recettes en base de données
                     for (Recipe r : db.getAllRecipe()){
-                        rowRecipes.add(new RowRecipe(r.getPicture(), r.getName(), r.getType(), r.getRate()));
+                        rowRecipes.add(new RowRecipe(getBitmapFromPath(r.getPicture()), r.getName(), r.getType(), r.getRate()));
                     }
                     setAdapter(new RowRecipeAdapter(getContext(), rowRecipes));
                     listRecipe.setAdapter(adapter);

@@ -71,7 +71,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
             + COLUMN_INGREDIENTS + " text not null, "
             + COLUMN_PREPARATIONSTEPS + " text not null, "
             + COLUMN_RATE + " integer default 0, "
-            + COLUMN_PICTURE + " blob,"
+            + COLUMN_PICTURE + " text,"
             + COLUMN_USER + " integer,"
             + "FOREIGN KEY(user) REFERENCES user(_idUser)) ";
 
@@ -224,7 +224,6 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         else
         {return true; }
     }
-
     public ArrayList<Recipe> getAllRecipe(){
         Log.d("BDD", "Infos de la BDD recipe");
         ArrayList<Recipe> Recipes = new ArrayList<Recipe>();
@@ -233,14 +232,14 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         if (result.getCount() > 0){
             // todo faire la liste des recettes
             while(result.moveToNext()) {
-                Recipes.add(new Recipe(result.getInt(0), result.getString(1), result.getString(2), result.getInt(3), result.getInt(4), result.getString(5), result.getString(6), result.getFloat(7),  result.getBlob(8)));
+                Recipes.add(new Recipe(result.getInt(0), result.getString(1), result.getString(2), result.getInt(3), result.getInt(4), result.getString(5), result.getString(6), result.getFloat(7),  result.getString(8)));
 
                 Log.d("recipe", result.getString(1));
                 Log.d("recipe", result.getString(2));
                 Log.d("recipe", result.getString(3));
                 Log.d("recipe", result.getString(4));
                 Log.d("recipe", result.getString(5));
-                Log.d("recipe", String.valueOf(result.getBlob(8).length));
+                Log.d("recipe", result.getString(8));
             }
         }
         return Recipes;
@@ -255,10 +254,21 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         if (result.getCount() > 0){
             // todo faire la liste des recettes
             while(result.moveToNext()) {
-                Recipes.add(new Recipe(result.getInt(0), result.getString(1), result.getString(2), result.getInt(3), result.getInt(4), result.getString(5), result.getString(6), result.getFloat(7),  result.getBlob(8)));
+                Recipes.add(new Recipe(result.getInt(0), result.getString(1), result.getString(2), result.getInt(3), result.getInt(4), result.getString(5), result.getString(6), result.getFloat(7),  result.getString(8)));
             }
         }
         return Recipes;
+    }
+    public int getLastIdRecipe(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor result = db.rawQuery("select MAX(_idRecipe) from " + TABLE_RECIPE , null);
+
+        if (result.getCount() > 0){
+            result.moveToNext();
+            Log.d("Last ID", String.valueOf(result.getInt(0)));
+               return result.getInt(0);
+        }
+        return 0;
     }
 
 }
